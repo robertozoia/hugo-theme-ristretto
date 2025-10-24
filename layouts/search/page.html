@@ -1,0 +1,199 @@
+{{ define "per_page_scripts" }}
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+<script src="/pagefind/pagefind-ui.js"></script>
+
+<style>
+/* PageFind UI Dark Mode Customization */
+
+/* Light mode (default) - keep PageFind's defaults mostly intact */
+.pagefind-ui__search-input {
+    background-color: white;
+    color: #111827;
+    border: 1px solid #d1d5db;
+}
+
+.pagefind-ui__search-input:focus {
+    border-color: #FC6C0C;
+    outline: none;
+}
+
+.pagefind-ui__result {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+}
+
+.pagefind-ui__result:hover {
+    background-color: #f9fafb;
+}
+
+.pagefind-ui__result-title {
+    color: #111827 !important;
+}
+
+.pagefind-ui__result-excerpt {
+    color: #6b7280;
+}
+
+.pagefind-ui__message {
+    color: #6b7280;
+}
+
+/* Dark mode overrides */
+.dark .pagefind-ui__search-input {
+    background-color: #1e293b;
+    color: #e5e5e5;
+    border: 1px solid #404040;
+}
+
+.dark .pagefind-ui__search-input:focus {
+    border-color: #FC6C0C;
+}
+
+.dark .pagefind-ui__search-input::placeholder {
+    color: #9ca3af;
+}
+
+.dark .pagefind-ui__result {
+    background-color: #1e293b;
+    border: 1px solid #404040;
+}
+
+.dark .pagefind-ui__result:hover {
+    background-color: #334155;
+}
+
+/* Target the link AND the title with higher specificity */
+.dark .pagefind-ui__result-link,
+.dark .pagefind-ui__result-link:visited {
+    color: #e5e5e5 !important;
+}
+
+.dark .pagefind-ui__result-link:hover {
+    color: #4da3ff !important;
+}
+
+.dark .pagefind-ui__result-title,
+.dark .pagefind-ui__result-link .pagefind-ui__result-title {
+    color: #e5e5e5 !important;
+}
+
+.dark .pagefind-ui__result-excerpt {
+    color: #9ca3af !important;
+}
+
+.dark .pagefind-ui__result-excerpt mark {
+    background-color: #FC6C0C;
+    color: white;
+}
+
+.dark .pagefind-ui__message {
+    color: #9ca3af;
+}
+
+.dark .pagefind-ui__button {
+    background-color: #334155;
+    color: #e5e5e5;
+    border: 1px solid #404040;
+}
+
+.dark .pagefind-ui__button:hover {
+    background-color: #475569;
+}
+
+/* Search clear button */
+.dark .pagefind-ui__search-clear {
+    color: #9ca3af;
+}
+
+.dark .pagefind-ui__search-clear:hover {
+    color: #e5e5e5;
+}
+
+/* Loading state */
+.dark .pagefind-ui__loading {
+    color: #9ca3af;
+}
+
+/* No results message */
+.dark .pagefind-ui__message {
+    background-color: #1e293b;
+    border: 1px solid #404040;
+    color: #9ca3af;
+}
+
+/* Result inner elements - be very specific */
+.dark .pagefind-ui__result-inner {
+    color: #e5e5e5;
+}
+
+.dark .pagefind-ui__result-link > * {
+    color: inherit;
+}
+
+/* Meta information */
+.dark .pagefind-ui__result-meta {
+    color: #9ca3af;
+}
+
+.dark .pagefind-ui__result-url {
+    color: #4da3ff;
+}
+
+/* Highlight color for search terms */
+.pagefind-ui__result-excerpt mark {
+    background-color: #FC6C0C;
+    color: white;
+    padding: 2px 4px;
+    border-radius: 2px;
+}
+
+/* Ensure smooth transitions */
+.pagefind-ui__search-input,
+.pagefind-ui__result,
+.pagefind-ui__button {
+    transition: background-color 200ms ease-in-out, border-color 200ms ease-in-out, color 200ms ease-in-out;
+}
+</style>
+
+{{ end }}
+
+{{ define "main" }}
+<div class="container max-w-screen-md mx-auto mb-auto mt-20 px-4 md:mt-24 md:px-0 pb-16">
+
+    {{ with .Params.cover }}
+    <div><img src="{{ . }}" class="rounded-lg"></div>
+    {{ end }}
+
+    {{ if or .Title .Content }}
+    <div>
+        <article class="pb-4 mb-10">
+            {{ with .Title }}
+            <header>
+                <h1 class="text-3xl font-sans font-normal text-gray-900 dark:text-gray-100">
+                    {{ .}}
+                </h1>
+            </header>
+            {{ end }}
+            {{ with .Content }}
+            <div class="mt-3 font-sans font-light text-gray-900 dark:text-gray-100">
+                {{ . }}
+            </div>
+            {{ end }}
+        </article>
+    </div>
+    {{ end }}
+
+    <div id="search"></div>
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            new PagefindUI({
+                element: "#search",
+                excerptLength: 50,
+                showSubResults: false
+            }
+            );
+        });
+    </script>
+
+</div>
+{{ end }}

@@ -1,0 +1,11 @@
+{{- with resources.Get "css/styles.css" }}
+{{- if hugo.IsProduction }}
+	<style>
+		{{ $css := . | minify | fingerprint }}
+		{{ $css.Content | safeCSS }}
+	</style>
+{{- else }}
+	<link rel="stylesheet" href="{{ .RelPermalink }}">
+{{- end }}
+{{- end }}
+

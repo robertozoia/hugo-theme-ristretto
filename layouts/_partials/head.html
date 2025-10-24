@@ -1,0 +1,34 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+{{- /* Generate SEO meta description */ -}}
+{{- $description := "" -}}
+{{- if .Description -}}
+{{- $description = .Description -}}
+{{- else if .Summary -}}
+{{- $description = .Summary -}}
+{{- else if .IsPage -}}
+{{- $description = .Content | plainify | truncate 155 -}}
+{{- else -}}
+{{- $description = site.Params.description | default site.Title -}}
+{{- end -}}
+
+<meta name="description" content="{{ $description }}">
+{{- if .IsPage -}}
+<meta name="author" content="{{ .Params.author | default site.Params.author | default site.Title }}">
+{{- end -}}
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ .Permalink }}">
+
+{{ hugo.Generator }}
+{{ partialCached "opengraph.html" . }}
+{{ partialCached "twitter_cards.html" . }}
+
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
+{{ partialCached "head/css.html" . }}
+{{/* {{ partialCached "head/js.html" . }} */}}
+
+<link rel="icon" href="/icons/favicon.png" type="image/png">
+<link rel="alternate" type="application/rss+xml" href="/index.xml" title="{{ site.Title }}">
+
+</head>

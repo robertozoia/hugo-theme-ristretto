@@ -1,0 +1,318 @@
+@import "tailwindcss";
+
+@theme {
+    --color-bg-light: #ffffff;
+    --color-bg-dark: #1a1a1a;
+    --color-text-light: #333333;
+    --color-text-dark: #e5e5e5;
+    --color-text-secondary-light: #666666;
+    --color-text-secondary-dark: #a3a3a3;
+    --color-border-light: #e5e5e5;
+    --color-border-dark: #404040;
+    --color-accent: rgb(252, 108, 12);
+    --color-accent-hover: rgb(232, 88, 0);
+}
+
+/**
+ * Dark mode configuration
+ * Uses class-based dark mode strategy for manual toggle
+ * Configure TailwindCSS v4 to use class-based dark mode
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/**
+ * Mobile accessibility: Ensure touch targets are at least 48x48px
+ * WCAG 2.5.5 (AAA) and 2.5.8 (AA) compliance
+ */
+@media (max-width: 767px) {
+
+    /* Navigation menu links - increase touch target size */
+    nav a,
+    nav button {
+        min-height: 48px;
+        min-width: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 16px !important;
+    }
+
+    /* Footer links - increase touch target */
+    footer a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 12px !important;
+    }
+
+    /* Social share icons - ensure adequate touch area */
+    a[aria-label*="Share"] {
+        min-width: 48px;
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px;
+    }
+
+    /* Button elements - ensure minimum size */
+    button,
+    .button,
+    a.button {
+        min-height: 48px;
+        padding: 12px 20px !important;
+    }
+
+    /* Search icon clickable area */
+    a[aria-label*="Search"],
+    a svg[data-type="search"] {
+        padding: 12px;
+    }
+
+    /* Dropdown menu items on mobile */
+    .dropdown-menu a {
+        min-height: 48px;
+        padding: 14px 16px !important;
+    }
+
+    /* Pagination links */
+    ul.pagination li {
+        min-width: 48px;
+        min-height: 48px;
+        padding: 12px 16px !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+article p {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+article a {
+    text-decoration: underline;
+    color: #0969da;
+}
+
+.dark article a {
+    color: #4da3ff;
+}
+
+article h1 a,
+article h2 a {
+    text-decoration: none;
+    color: #333;
+}
+
+.dark article h1 a,
+.dark article h2 a {
+    color: #e5e5e5;
+}
+
+article h1 {
+    font-size: 2.4em;
+    font-weight: 400;
+    margin: 25px 0 15px 0 !important;
+    line-height: 1.4em;
+    color: #333;
+}
+
+.dark article h1 {
+    color: #e5e5e5;
+}
+
+article h2 {
+    font-size: 1.4em;
+    font-weight: 400;
+    margin: 15px 0 10px 0 !important;
+    line-height: 1.5;
+    color: #333;
+}
+
+.dark article h2 {
+    color: #e5e5e5;
+}
+
+article h3 {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #333;
+}
+
+.dark article h3 {
+    color: #e5e5e5;
+}
+
+/* Code highlight  */
+.highlight {
+    margin: 1rem;
+}
+
+pre {
+    background-color: #272822;
+    padding: 0.48rem;
+    border-radius: 0.125rem;
+    margin-left: 1em;
+    margin-right: 1em;
+    font-size: 80%;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+code {
+
+    padding: 2px;
+    background-color: #eee;
+}
+
+.dark code {
+    background-color: #2d2d2d;
+    color: #e5e5e5;
+}
+
+pre code {
+    background-color: #272822;
+    color: #eee;
+    display: block;
+}
+
+.dark pre code {
+    background-color: #1e1e1e;
+    color: #e5e5e5;
+    display: block;
+}
+
+article blockquote {
+    margin: 2em;
+    border-left: 1px solid #ccc;
+    line-height: 1.3;
+    padding: 10px 20px;
+    font-size: 0.8em;
+    background-color: #eee;
+    color: #555;
+}
+
+.dark article blockquote {
+    border-left: 1px solid #555;
+    background-color: #2d2d2d;
+    color: #a3a3a3;
+}
+
+/* Lists */
+article ul {
+    list-style-type: disc;
+    margin: 1em 0 1em 0.6em;
+    padding-left: 1em;
+}
+
+article ul ul,
+article ul li ul {
+    margin: 0 0 0 0.6em;
+    padding-left: 0.6em;
+    list-style-type: disc;
+}
+
+article ol {
+    list-style: inside;
+}
+
+article ol li {
+    /* https://www.joshwcomeau.com/css/styling-ordered-lists-with-css-counters/ */
+    counter-increment: muffins;
+    padding-bottom: 0.6em;
+    text-indent: -1em;
+    margin-left: 1.8em;
+}
+
+article ol li:before {
+    content: counter(muffins) ". ";
+}
+
+article ol {
+    list-style: none;
+    counter-reset: muffins;
+    margin: 1em 0 1em 0.6em;
+}
+
+article ol li p {
+    margin-top: -10px;
+    display: inline;
+}
+
+article figure {
+    padding: 1em;
+}
+
+article img.image-with-shadow {
+    @apply drop-shadow-md;
+}
+
+/**
+ * Footnotes
+ **/
+article a.footnote-ref,
+article a.footnote-backref {
+    text-decoration: none;
+}
+
+.footnotes {
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
+.footnotes ol li p {
+    font-size: 0.75rem;
+    line-height: 1rem;
+
+    margin-top: -10px;
+    display: inline;
+}
+
+/**
+ ** Pagination
+ **/
+
+.pagination {
+    margin-bottom: 100px;
+}
+
+ul.pagination {
+    list-style-type: none;
+}
+
+ul.pagination li {
+    padding: 0.5em 0.6em;
+    margin: 3px 3px;
+    float: left;
+    border: 1px solid #ccc;
+    background-color: #ddd;
+}
+
+.dark ul.pagination li {
+    border: 1px solid #555;
+    background-color: #2d2d2d;
+    color: #e5e5e5;
+}
+
+ul.pagination li.active {}
+
+ul.pagination li.disable {}
+
+ul.pagination li.page-item {}
+
+/*
+ * Archives
+ */
+
+.archive table a {
+    text-decoration: underline;
+    color: #0969da;
+}
+
+article .button {
+    @apply font-bold py-4 px-6 border-4 border-orange-300 rounded;
+    @apply text-neutral-500 no-underline hover:bg-orange-300;
+}

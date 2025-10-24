@@ -1,0 +1,103 @@
+{{- /*
+Book Review Template
+
+Custom template for book review pages that displays:
+- Book cover on the left (fixed size)
+- Book details (title, author, rating) under the cover
+- Review content on the right side
+*/ -}}
+
+{{ define "main" }}
+
+<div class="container max-w-screen-lg mx-auto mb-auto mt-20 px-4 md:mt-24 md:px-0 pb-16">
+    <article class="pb-4 mb-10">
+        <header class="mb-8">
+            <h1 data-pagefind-meta="title" class="text-3xl font-sans font-normal text-gray-900 dark:text-gray-100 mb-4">
+                {{- /* Build custom title: "Book Title by Author" or fallback to page title */ -}}
+                {{ if .Params.book_title }}
+                {{ .Params.book_title }}
+                {{ with .Params.book_author }} by {{ . }}{{ end }}
+                {{ else }}
+                {{ .Title }}
+                {{ end }}
+            </h1>
+            {{ partial "metadata_top.html" . }}
+            <div class="border-b border-neutral-600 dark:border-neutral-500 w-14 h-8 mb-8"></div>
+        </header>
+
+        <!-- Book Review Layout: Cover on left, content on right -->
+        <div class="flex flex-col md:flex-row gap-12">
+            <!-- Left Column: Book Cover -->
+            <div class="md:w-1/3 lg:w-1/4 flex-shrink-0">
+                <!-- Book Cover -->
+                <div class="mb-4">
+                    {{- /* Resolve book cover as page resource or absolute path */ -}}
+                    {{ $bookCoverParam := .Params.cover }}
+                    {{ $bookCover := "" }}
+                    {{ if $bookCoverParam }}
+                    {{ $resource := .Resources.Get $bookCoverParam }}
+                    {{ if $resource }}
+                    {{ $bookCover = $resource.RelPermalink }}
+                    {{ else }}
+                    {{ $bookCover = path.Join .RelPermalink $bookCoverParam }}
+                    {{ end }}
+                    {{ end }}
+
+                    {{ if $bookCover }}
+                    <img data-pagefind-meta="image[src]" src="{{ $bookCover }}"
+                        alt="{{ .Params.book_cover_alt | default (printf " %s by %s" .Params.book_title
+                        .Params.book_author) }}" class="w-full max-w-xs mx-auto md:mx-0 rounded-lg shadow-lg"
+                        style="aspect-ratio: 2/3; object-fit: cover;">
+                    {{ else }}
+                    <div class="w-full max-w-xs mx-auto md:mx-0 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-lg flex items-center justify-center text-gray-500 dark:text-gray-400"
+                        style="aspect-ratio: 2/3;">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">📚</div>
+                            <div class="text-sm">No Cover</div>
+                        </div>
+                    </div>
+                    {{ end }}
+                </div>
+
+                <!-- Rating under cover -->
+                {{ with .Params.rating }}
+                <div class="text-left md:text-left">
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 font-medium">
+                        <span class="mr-2 text-lg">⭐</span>
+                        {{ . }}
+                    </div>
+                </div>
+                {{ end }}
+            </div>
+
+            <!-- Right Column: Review Content -->
+            <div class="md:w-2/3 lg:w-3/4">
+                <div class="prose prose-gray max-w-none font-sans font-light text-gray-900 dark:text-gray-100">
+                    {{ .Content }}
+                </div>
+
+                {{ partial "metadata_bottom.html" . }}
+
+                <div class="mt-10">
+                    {{ if not .Params.disableSocialShare }}
+                    <div class="mb-5 flex space-x-2.5 items-end text-gray-700 dark:text-gray-300">
+                        {{ partial "social_share.html" . }}
+                    </div>
+                    {{ end }}
+
+                    {{ if not .Params.disableReplyByMail }}
+                    <div>
+                        {{ partial "reply_by_mail.html" . }}
+                    </div>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+    </article>
+
+    {{ if not .Params.disableSubscribeForm }}
+    {{ partial "subscribe_form.html" . }}
+    {{ end }}
+</div>
+
+{{ end }}

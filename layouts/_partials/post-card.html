@@ -1,0 +1,53 @@
+{{/*
+Post Card Partial
+
+Usage:
+{{ partial "post-card.html" (dict "post" . "width" "300px" "height" "400px") }}
+
+Parameters:
+- post: The page object (required)
+- width: Card width (default: "300px")
+- height: Card height (default: "400px")
+*/}}
+
+{{ $post := .post }}
+{{ $width := .width | default "300px" }}
+{{ $height := .height | default "400px" }}
+
+{{ if $post }}
+{{ $title := $post.Title }}
+{{ $publishDate := $post.Date.Format "January 2, 2006" }}
+{{ $dateISO := $post.Date.Format "2006-01-02" }}
+{{ $url := $post.Permalink }}
+
+<article
+    class="flex flex-col bg-white dark:bg-slate-800 rounded-lg overflow-hidden shadow-md transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-lg"
+    style="width: {{ $width }}; height: {{ $height }};">
+    <a href="{{ $url }}" class="flex flex-col h-full !no-underline text-inherit">
+        <div class="relative overflow-hidden flex-1 min-h-0">
+            {{ if $post.Params.cover }}
+            {{ $cover := $post.Resources.GetMatch $post.Params.cover }}
+            {{ if $cover }}
+            {{ $coverImage := $cover.Fill "400x250" }}
+            <img src="{{ $coverImage.RelPermalink }}" alt="{{ $cover.Params.alt | default $title }}" loading="lazy"
+                class="w-full h-full object-cover block">
+            {{ else }}
+            <div class="w-full h-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm">
+                <span>No Image</span>
+            </div>
+            {{ end }}
+            {{ else }}
+            <div class="w-full h-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm">
+                <span>No Image</span>
+            </div>
+            {{ end }}
+        </div>
+        <div class="p-4 flex-shrink-0">
+            <h3 class="mb-2 text-lg font-semibold leading-tight text-gray-800 dark:text-gray-100 line-clamp-2">{{ $title }}</h3>
+            <time class="text-gray-600 dark:text-gray-400 text-sm font-normal" datetime="{{ $dateISO }}">
+                {{ $publishDate }}
+            </time>
+        </div>
+    </a>
+</article>
+{{ end }}

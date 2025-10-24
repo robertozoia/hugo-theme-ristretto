@@ -1,0 +1,90 @@
+{{ define "main" }}
+<div class="container
+      max-w-screen-md
+      mx-auto mb-auto
+      mt-20
+      px-4
+      md:mt-24
+      md:px-0
+      pb-16">
+
+    {{- with .Params.cover }}
+    {{- with $.Resources.GetMatch . }}
+    <div><img src="{{ .RelPermalink }}" class="rounded-lg"></div>
+    {{- end }}
+    {{- end }}
+
+    {{- if or .Title .Content }}
+    <article class="pb-4 mb-10">
+        <header>
+            {{- if .Title }}
+            <h1 class="text-3xl font-sans font-normal text-gray-900 dark:text-gray-100">
+                {{ .Title }}
+            </h1>
+            <!--  partial "metadata.html" .
+                    <div class="border-b border-neutral-600 w-14 h-8 mb-14"></div> -->
+            {{- end }}
+        </header>
+
+        {{- if .Content }}
+        <div class="mt-3 font-sans font-light text-gray-900 dark:text-gray-100">
+            {{ .Content }}
+        </div>
+        {{- end }}
+        {{ if not .Params.disableSubscribeForm }}
+        {{ partial "subscribe_form.html" . }}
+        {{ end }}
+    </article>
+    {{- end }}
+
+
+    <div class="archive">
+        {{- /* Get and sort posts by date descending */ -}}
+        {{- $posts := where .Site.RegularPages "Type" "posts" }}
+        {{- $posts = sort $posts "Date" "desc" }}
+
+        {{- /* Group by year */ -}}
+        {{- range $posts.GroupByDate "2006" }}
+        <div class="year-section mb-12">
+            <h2 class="text-2xl font-sans font-medium text-gray-900 dark:text-gray-100 mb-6 border-b border-gray-200 dark:border-gray-700 pb-2">
+                {{ .Key }}
+            </h2>
+
+            {{- /* Group by month within year */ -}}
+            {{- range .Pages.GroupByDate "January" }}
+            <div class="month-section mb-8">
+                <h3 class="text-lg font-sans font-medium text-gray-700 dark:text-gray-300 mb-4">
+                    {{ .Key }}
+                </h3>
+
+                <div class="posts-list ml-4">
+                    {{- range .Pages }}
+                    <div class="post-item mb-2 pb-2 border-b border-gray-100 dark:border-gray-800 last:border-b-0">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center flex-1 min-w-0">
+                                <span class="text-sm text-gray-600 dark:text-gray-400 mr-3 flex-shrink-0">
+                                    {{ .Date.Format "Jan 2" }}
+                                </span>
+                                <a href="{{ .RelPermalink }}"
+                                    class="text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 font-sans font-normal text-base truncate">
+                                    {{ .Title }}
+                                </a>
+                            </div>
+                            {{- with .Params.categories }}
+                            <span
+                                class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-full ml-3 flex-shrink-0">
+                                {{ index . 0 }}
+                            </span>
+                            {{- end }}
+                        </div>
+                    </div>
+                    {{- end }}
+                </div>
+            </div>
+            {{- end }}
+        </div>
+        {{- end }}
+    </div>
+
+</div>
+{{ end }}

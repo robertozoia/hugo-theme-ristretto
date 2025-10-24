@@ -1,0 +1,92 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-US'
+title = 'My New Hugo Site'
+
+# Theme parameters
+[params]
+  description = 'A personal blog about technology and ideas'
+  copyright = '© 2025 My New Hugo Site. All rights reserved.'
+
+  # Email for reply functionality
+  reply_to_email = 'hello@example.org'
+
+  # Mailchimp newsletter integration (optional)
+  mailchimp_user_id = 'your_mailchimp_user_id'
+  mailchimp_audience_id = 'your_mailchimp_audience_id'
+
+  # GoatCounter analytics (optional)
+  # goatcounter_code = 'your_goatcounter_code'
+
+# Main navigation menu
+[menus]
+[[menus.main]]
+  name = 'Home'
+  pageRef = '/'
+  weight = 10
+
+[[menus.main]]
+  name = 'Posts'
+  pageRef = '/posts'
+  weight = 20
+
+[[menus.main]]
+  name = 'Categories'
+  identifier = 'categories'
+  url = '/categories'
+  weight = 30
+
+[[menus.main]]
+  name = 'Tags'
+  pageRef = '/tags'
+  weight = 40
+
+# Example: Search icon in menu
+# [[menus.main]]
+#   name = 'Search'
+#   url = '/search'
+#   weight = 50
+#   [menus.main.params]
+#     icon = true
+
+# Example: Button-style menu item
+# [[menus.main]]
+#   name = 'Subscribe'
+#   url = '/subscribe'
+#   weight = 60
+#   [menus.main.params]
+#     button = true
+
+# Categories dropdown menu items
+[[menus.categories]]
+  name = 'Technology'
+  url = '/categories/technology'
+  weight = 10
+
+[[menus.categories]]
+  name = 'Programming'
+  url = '/categories/programming'
+  weight = 20
+
+[[menus.categories]]
+  name = 'Design'
+  url = '/categories/design'
+  weight = 30
+
+# Footer menu
+[[params.footerMenu]]
+  name = 'About'
+  url = '/about'
+
+[[params.footerMenu]]
+  name = 'Privacy'
+  url = '/privacy'
+
+[[params.footerMenu]]
+  name = 'RSS'
+  url = '/index.xml'
+  external = true
+
+[module]
+[module.hugoVersion]
+  extended = false
+  min = '0.146.0'

@@ -1,0 +1,14 @@
+{{ $url := .Permalink }}
+{{ $title := .Title }}
+{{ $linkedin_href := printf "https://www.linkedin.com/shareArticle?mini=true&url=%s" ($url | urlquery) }}
+{{ $twitter_href := printf "https://twitter.com/share?url=%s&text=%s" ($url | urlquery) ($title | urlquery) }}
+
+<span class="pr-2">Share</span>
+
+<a href="{{ $linkedin_href }}" target="_blank" aria-label="Share on LinkedIn">
+    {{ readFile "themes/ristretto/assets/icons/svg_linkedin.svg" | safeHTML }}
+</a>
+
+<a href="{{ $twitter_href }}" target="_blank" aria-label="Share on Twitter">
+    {{ readFile "themes/ristretto/assets/icons/svg_twitter.svg" | safeHTML }}
+</a>

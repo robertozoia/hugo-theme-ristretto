@@ -1,0 +1,102 @@
+{{ define "main" }}
+<div class="container
+      max-w-screen-xl
+      mx-auto mb-auto
+      mt-20
+      px-4
+      md:mt-24
+      md:px-52
+      pb-16">
+
+  <article class="pb-4 mb-10">
+    <div class="flex flex-col lg:flex-row items-start lg:items-center gap-6 lg:gap-8 w-full">
+
+      <!-- Content Section (Left) -->
+      <div class="flex-1 order-2 lg:order-1">
+        <header>
+          {{ with .Params.title }}
+          <h1 class="text-3xl lg:text-4xl text-gray-900 dark:text-gray-100 font-sans font-medium antialiased">
+            {{ . }}
+          </h1>
+          {{ end }}
+
+          {{ with .Params.tagline }}
+          <p class="mt-2 text-lg lg:text-xl text-gray-700 dark:text-gray-300 font-sans font-normal antialiased">
+            {{ . }}
+          </p>
+          {{ end }}
+        </header>
+
+        {{ with .Params.subheading }}
+        <div class="mt-4 text-base/6 lg:text-lg/7 font-sans font-normal antialiased text-gray-600 dark:text-gray-400">
+          {{ . }}
+        </div>
+        {{ end }}
+
+        <div class="mt-4 text-base/6 lg:text-lg/7 font-sans font-normal antialiased text-gray-900 dark:text-gray-100 text">
+          {{ .Content }}
+        </div>
+      </div>
+
+      <!-- Hero Image Section (Right) -->
+
+      <div class="mt-10 flex-shrink-0 order-1 lg:order-2 self-center lg:self-start">
+        {{ if .Params.hero_image }}
+        <div class="w-32 h-32 lg:w-48 lg:h-48 rounded-full overflow-hidden shadow-lg">
+          <img src="{{ .Params.hero_image | relURL }}" alt="{{ .Title }}" class="w-full h-full object-cover">
+        </div>
+        {{ end }}
+
+        <!-- CTA Buttons under photo -->
+        <div class="mt-4 flex flex-col gap-3 w-32 lg:w-48">
+          {{ if .Params.cta_primary_label }}
+          <a href="{{ .Params.cta_primary_link }}"
+            class="inline-block text-center px-4 py-2 !text-white !text-sm !font-medium rounded-md transition-colors duration-200 !no-underline hover:!bg-orange-600"
+            style="background-color: rgb(252, 108, 12);">
+            {{ .Params.cta_primary_label }}
+          </a>
+          {{ end }}
+
+          {{ if .Params.cta_secondary_label }}
+          <a href="{{ .Params.cta_secondary_link }}"
+            class="inline-block text-center px-4 py-2 !bg-gray-100 dark:!bg-gray-700 !hover:bg-gray-200 dark:!hover:bg-gray-600 !text-gray-900 dark:!text-gray-100 !text-sm !font-medium rounded-md transition-colors duration-200 !no-underline">
+            {{ .Params.cta_secondary_label }}
+          </a>
+          {{ end }}
+        </div>
+      </div>
+
+    </div>
+    {{ if not .Params.disableSubscribeForm }}
+    {{ partial "subscribe_form.html" . }}
+    {{ end }}
+  </article>
+
+  <div class="border-t-1 border-gray-300 dark:border-gray-700"></div>
+  <h2 class="
+  text-2xl
+  font-bold
+  mb-4
+  mt-4
+  text-gray-900
+  dark:text-gray-100
+  font-sans
+  font-medium
+  antialiased
+  ">Recent Articles</h2>
+  <div class="archive grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+    {{ $posts := where site.RegularPages "Section" "posts" }}
+    {{ with .Params.featured_categories }}
+    {{ $categories := . }}
+    {{ $posts = where $posts "Params.categories" "intersect" $categories }}
+    {{ end }}
+    {{ range first 6 $posts }}
+    {{ partial "post-card.html" (dict "post" . "width" "100%" "height" "320px") }}
+    {{ end }}
+  </div>
+
+
+
+
+</div>
+{{ end }}

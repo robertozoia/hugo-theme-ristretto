@@ -1,0 +1,118 @@
+{{ define "main" }}
+
+<div class="container max-w-screen-xl mx-auto mb-auto mt-20 px-4 md:mt-24 md:px-8 pb-16">
+  <!-- Page Header Section -->
+  <header class="mb-12">
+    <!-- Cover Image -->
+    {{- with .Params.cover }}
+    {{- with $.Resources.GetMatch . }}
+    <div class="mb-8">
+      <img src="{{ .RelPermalink }}" alt="{{ with .Params.alt }}{{ . }}{{ else }}{{ $.Title }}{{ end }}"
+        class="w-full max-w-2xl mx-auto rounded-lg shadow-lg">
+    </div>
+    {{- end }}
+    {{- end }}
+
+    <!-- Page Title -->
+    <h1 class="text-4xl font-bold mb-6 pt-6 text-gray-900 font-sans antialiased">
+      Tag: {{ .Title }}
+    </h1>
+
+    <!-- Page Text Content -->
+    {{- if .Content }}
+    <div class="max-w-3xl mx-auto text-lg text-gray-700 font-light leading-relaxed mb-12">
+      {{ .Content }}
+    </div>
+    {{- end }}
+
+
+  </header>
+
+
+
+
+  <!-- Posts Grid Section -->
+  {{- $paginator := .Paginate .Pages 12 }}
+
+  {{- if gt (len $paginator.Pages) 0 }}
+  <section class="mb-12">
+
+    <!-- 3-column grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+      {{- range $paginator.Pages }}
+      {{- partial "post-card.html" (dict "post" .) }}
+      {{- end }}
+    </div>
+  </section>
+
+  <!-- Pagination -->
+  {{- if gt $paginator.TotalPages 1 }}
+  <nav class="flex justify-center items-center space-x-4 mt-12">
+    {{- if $paginator.HasPrev }}
+    <a href="{{ $paginator.Prev.URL }}"
+      class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md text-gray-700 font-medium transition-colors duration-200">
+      ← Previous
+    </a>
+    {{- end }}
+
+    <div class="flex space-x-2">
+      {{- $currentPage := $paginator.PageNumber }}
+      {{- $totalPages := $paginator.TotalPages }}
+      {{- $startPage := 1 }}
+      {{- $endPage := $totalPages }}
+      {{- if gt $totalPages 5 }}
+      {{- $startPage = sub $currentPage 2 }}
+      {{- $endPage = add $currentPage 2 }}
+      {{- if lt $startPage 1 }}
+      {{- $startPage = 1 }}
+      {{- $endPage = 5 }}
+      {{- end }}
+      {{- if gt $endPage $totalPages }}
+      {{- $endPage = $totalPages }}
+      {{- $startPage = sub $totalPages 4 }}
+      {{- end }}
+      {{- end }}
+      {{- range seq $startPage $endPage }}
+      {{- if eq . $currentPage }}
+      <span class="px-3 py-2 bg-blue-500 text-white rounded-md font-medium">
+        {{ . }}
+      </span>
+      {{- else }}
+      <a href="{{ (index $.Paginator.Pagers (sub . 1)).URL }}"
+        class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-md text-gray-700 font-medium transition-colors duration-200">
+        {{ . }}
+      </a>
+      {{- end }}
+      {{- end }}
+    </div>
+
+    {{- if $paginator.HasNext }}
+    <a href="{{ $paginator.Next.URL }}"
+      class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md text-gray-700 font-medium transition-colors duration-200">
+      Next →
+    </a>
+    {{- end }}
+  </nav>
+
+  <!-- Pagination Info -->
+  <div class="text-center mt-4 text-gray-600 text-sm">
+    Showing
+    {{ add (mul (sub $paginator.PageNumber 1) $paginator.PagerSize) 1 }} -
+    {{ add (mul (sub $paginator.PageNumber 1) $paginator.PagerSize) (len $paginator.Pages) }}
+    of
+    {{ len .Pages }} posts
+  </div>
+  {{- end }}
+
+  {{- else }}
+  <!-- No posts found message -->
+  <section class="text-center py-12">
+    <div class="text-gray-500 text-lg">
+      No posts found.
+    </div>
+  </section>
+  {{- end }}
+
+</div>
+
+{{ end }}

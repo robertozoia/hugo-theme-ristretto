@@ -1,0 +1,61 @@
+{{ define "main"}}
+
+<div class="container
+      max-w-screen-md
+      mx-auto mb-auto
+      mt-20
+      px-4
+      md:mt-24
+      md:px-0
+      pb-16">
+
+    {{ if .Params.cover }}
+    {{ with .Resources.GetMatch .Params.cover }}
+    <div>
+        <img data-pagefind-meta="image[src]" src="{{ .RelPermalink }}" alt="{{ $.Params.cover_alt }}"
+            class="rounded-lg">
+    </div>
+    {{ end }}
+    {{ end }}
+
+    <article class="pb-4 mb-10">
+        <header>
+            {{ with .Params.title }}
+            <h1 data-pagefind-meta="title" class="text-3xl font-sans font-normal text-gray-900 dark:text-gray-100">
+                {{ . }}
+            </h1>
+            {{ end }}
+
+            {{ partial "metadata_top.html" . }}
+
+            <div class="border-b border-neutral-600 dark:border-neutral-500 w-14 h-8 mb-14"></div>
+        </header>
+
+        <div class="mt-3 font-sans font-light text-gray-900 dark:text-gray-100">
+            {{ .Content }}
+        </div>
+        {{ partial "metadata_bottom.html" . }}
+
+        <div class="mt-10">
+            {{ if not .Params.disableSocialShare }}
+            <div class="mb-5 flex space-x-2.5 items-end text-gray-700 dark:text-gray-300">
+                {{ partial "social_share.html" . }}
+            </div>
+            {{ end }}
+
+            {{ if not .Params.disableReplyByMail }}
+            <div>
+                {{ partial "reply_by_mail.html" . }}
+            </div>
+            {{ end }}
+
+        </div>
+
+    </article>
+
+    {{ if not .Params.disableSubscribeForm }}
+    {{ partial "subscribe_form.html" . }}
+    {{ end }}
+
+</div>
+{{ end }}

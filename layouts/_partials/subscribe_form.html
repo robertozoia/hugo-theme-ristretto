@@ -1,0 +1,31 @@
+<div class="mt-8 w-full bg-gray-200 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg p-6 transition-colors">
+
+    <form
+        action="https://zoia.us6.list-manage.com/subscribe/post?u={{ .Site.Params.mailchimp_user_id }}&amp;id={{ .Site.Params.mailchimp_audience_id }}"
+        method="post" id="mc-subscribe-form" name="mc-subscribe-form" target="_blank">
+        <p class="
+                  text-gray-900
+                  dark:text-gray-100
+                  font-semibold
+                  ">Join my free newsletter and receive updates directly to your inbox.</p>
+
+        <label for="mc-email" class="text-gray-900 dark:text-gray-100">Email Address *
+            <input type="email" value="" name="EMAIL" class="border-b border-neutral-400 dark:border-neutral-500 bg-transparent dark:bg-slate-800 text-gray-900 dark:text-gray-100 w-60 mr-4 px-2 py-1" id="mc-email">
+        </label>
+        <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+        <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text"
+                name="b_{{ .Site.Params.mailchimp_user_id }}_{{ .Site.Params.mailchimp_audience_id }}" tabindex="-1"
+                value=""></div>
+        <input type="submit" value="Subscribe" name="subscribe" id="mc-subscribe" class="
+                  bg-orange-400
+                  hover:bg-orange-500
+                  dark:bg-orange-500
+                  dark:hover:bg-orange-600
+                  text-white
+                  px-4 py-2
+                  rounded
+                  cursor-pointer
+                  transition-colors
+                  ">
+    </form>
+</div>

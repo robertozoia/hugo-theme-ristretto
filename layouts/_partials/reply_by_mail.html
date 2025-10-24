@@ -1,0 +1,22 @@
+<a class="border border-4 block
+          border-neutral-400
+          dark:border-neutral-600
+          text-neutral-500
+          dark:text-neutral-300
+          hover:bg-neutral-50
+          dark:hover:bg-slate-700
+          w-52
+          p-4
+          text-center
+          no-underline
+          transition-colors"
+    href="mailto:{{ .Site.Params.reply_to_email }}?subject=Reply to your post '{{ .Title | urlquery }}'">
+
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+    </svg>
+
+    Comment via email</a>

@@ -1,0 +1,151 @@
+{{- /*
+Book Reviews Template
+
+This template displays a page with cover image and text content,
+followed by a filtered collection of book reviews in a 3x4 grid layout.
+*/ -}}
+
+{{ define "main" }}
+
+{{- /* Get all pages that have 'book-reviews' or 'book-notes' in their categories */ -}}
+{{ $bookReviews := slice }}
+{{ range .Site.RegularPages }}
+  {{ if .Params.categories }}
+    {{ if or (in .Params.categories "book-reviews") (in .Params.categories "book-notes") }}
+      {{ $bookReviews = $bookReviews | append . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{- /* Get categories from the current page's categories field */ -}}
+{{ $pageCategories := .Params.categories }}
+
+{{- /* Filter the book reviews by categories if categories are set */ -}}
+{{ $filteredBooks := $bookReviews }}
+{{ if $pageCategories }}
+  {{ $filteredBooks = slice }}
+  {{ range $bookReviews }}
+    {{ $bookCategories := .Params.categories }}
+    {{- /* Check for intersection of categories */ -}}
+    {{ $hasMatch := false }}
+    {{ range $pageCategories }}
+      {{ if in $bookCategories . }}
+        {{ $hasMatch = true }}
+      {{ end }}
+    {{ end }}
+    {{ if $hasMatch }}
+      {{ $filteredBooks = $filteredBooks | append . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{- /* Set up pagination (12 books per page for 3x4 grid) */ -}}
+{{ $paginator := .Paginate $filteredBooks 12 }}
+
+<div class="container max-w-screen-xl mx-auto mb-auto mt-20 px-4 md:mt-24 md:px-8 pb-16">
+
+    <!-- Page Header Section -->
+    <header class="mb-12">
+        <!-- Cover Image -->
+        {{ with .Params.cover }}
+        <div class="mb-8">
+            <img src="{{ . }}" alt="{{ $.Params.cover_alt | default $.Title }}"
+                class="w-full max-w-2xl mx-auto rounded-lg shadow-lg">
+        </div>
+        {{ end }}
+
+        <!-- Page Title -->
+        <h1 class="text-4xl font-bold mb-6 text-gray-900 dark:text-gray-100 font-sans antialiased pt-6">
+            {{ .Title }}
+        </h1>
+
+        <!-- Page Text Content -->
+        {{ with .Content }}
+        <div class="max-w-3xl mx-auto text-lg text-gray-700 dark:text-gray-300 font-light leading-relaxed mb-12">
+            {{ . }}
+        </div>
+        {{ end }}
+    </header>
+
+    <!-- Book Reviews Grid Section -->
+    {{ if gt (len $paginator.Pages) 0 }}
+    <section class="mb-12">
+
+        <!-- Auto-fit grid with 250px cards -->
+        <div class="grid grid-cols-[repeat(auto-fit,250px)] gap-6 justify-center">
+            {{ range $paginator.Pages }}
+            {{ partial "book-card.html" . }}
+            {{ end }}
+        </div>
+    </section>
+
+    <!-- Pagination -->
+    {{ if gt $paginator.TotalPages 1 }}
+    <nav class="flex justify-center items-center space-x-4 mt-12">
+        {{ if $paginator.HasPrev }}
+        <a href="{{ $paginator.Prev.URL }}"
+            class="px-4 py-2 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 rounded-md text-gray-700 dark:text-gray-200 font-medium transition-colors duration-200">
+            ← Previous
+        </a>
+        {{ end }}
+
+        <div class="flex space-x-2">
+            {{ $paginationRange := seq $paginator.TotalPages }}
+            {{- /* Show up to 5 pages centered around current page */ -}}
+            {{ $start := sub $paginator.PageNumber 2 }}
+            {{ if lt $start 1 }}{{ $start = 1 }}{{ end }}
+            {{ $end := add $start 4 }}
+            {{ if gt $end $paginator.TotalPages }}
+            {{ $end = $paginator.TotalPages }}
+            {{ $start = sub $end 4 }}
+            {{ if lt $start 1 }}{{ $start = 1 }}{{ end }}
+            {{ end }}
+
+            {{ range seq $start $end }}
+            {{ if eq . $.Paginator.PageNumber }}
+            <span class="px-3 py-2 bg-blue-500 dark:bg-blue-600 text-white rounded-md font-medium">
+                {{ . }}
+            </span>
+            {{ else }}
+            <a href="{{ (index $.Paginator.Pagers (sub . 1)).URL }}"
+                class="px-3 py-2 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 rounded-md text-gray-700 dark:text-gray-200 font-medium transition-colors duration-200">
+                {{ . }}
+            </a>
+            {{ end }}
+            {{ end }}
+        </div>
+
+        {{ if $paginator.HasNext }}
+        <a href="{{ $paginator.Next.URL }}"
+            class="px-4 py-2 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 rounded-md text-gray-700 dark:text-gray-200 font-medium transition-colors duration-200">
+            Next →
+        </a>
+        {{ end }}
+    </nav>
+
+    <!-- Pagination Info -->
+    <div class="text-center mt-4 text-gray-600 dark:text-gray-400 text-sm">
+        Showing
+        {{ add (mul (sub $paginator.PageNumber 1) $paginator.PagerSize) 1 }} -
+        {{ add (mul (sub $paginator.PageNumber 1) $paginator.PagerSize) (len $paginator.Pages) }}
+        of
+        {{ len $filteredBooks }} book reviews
+    </div>
+    {{ end }}
+
+    {{ else }}
+    <!-- No book reviews found message -->
+    <section class="text-center py-12">
+        <div class="text-gray-500 dark:text-gray-400 text-lg">
+            {{ if $pageCategories }}
+            No book reviews found in the selected categories.
+            {{ else }}
+            No book reviews found.
+            {{ end }}
+        </div>
+    </section>
+    {{ end }}
+
+</div>
+
+{{ end }}

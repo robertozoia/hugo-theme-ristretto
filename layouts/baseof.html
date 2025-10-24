@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
+
+<head>
+  {{ partial "head.html" . }}
+  {{ block "per_page_scripts" . }}
+  {{ end }}
+  <script>
+    // Dark mode initialization - must run before body renders to avoid flash
+    (function() {
+      const theme = localStorage.getItem('theme') || 'light';
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+</head>
+
+<body class="bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+  <div class="flex flex-col h-screen justify-between">
+    <header>
+      {{ block "header" . }}
+      {{ partial "header.html" . }}
+      {{ end }}
+    </header>
+    <main>
+      {{ block "main" . }}{{ end }}
+    </main>
+    <footer>
+      {{ block "footer" . }}
+      {{ partial "footer.html" . }}
+      {{ end }}
+    </footer>
+    {{ partial "footer_scripts.html" . }}
+  </div>
+</body>
+
+</html>

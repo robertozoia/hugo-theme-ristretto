@@ -1,0 +1,68 @@
+<footer class="
+    footer
+    bottom-0
+    inset-x-0
+    w-full
+    bg-neutral-900
+    dark:bg-black
+    text-slate-300
+    dark:text-slate-400
+    sans-serif
+    font-light
+    text-sm
+    transition-colors
+    duration-200">
+    <div class="container max-w-screen-md mx-auto pt-2 py-2">
+        <nav class="flex
+                    flex-wrap
+                    w-full
+                    md:py-0
+                    mt-1.5
+                    bg-neutral-900
+                    dark:bg-black
+                    ">
+            <div class="flex-1
+                        flex
+                        md:py-4
+                        justify-start">
+                <ul>
+                    <li>
+                        Powered by <a target="_blank" href="https://gohugo.io" class="underline">Hugo</a> and Ristretto.
+                    </li>
+                    <li>
+                        {{ site.Params.copyright | markdownify }}
+                    </li>
+                </ul>
+            </div>
+            <ul class="
+                       text-base
+                       pt-4
+                       md-flex
+                       md:pt-0">
+                {{ range site.Params.footerMenu }}
+                <li>
+                    {{ if .icon }}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="inline h-5 w-5 fill-orange-500 -ml-6"
+                        viewBox="0 0 20 20" fill="currentColor">
+                        {{ .icon | safeHTML }}
+                    </svg>
+                    {{ end }}
+                    <a class="underline
+                              {{ if .icon }}inline{{ end }} text-xs
+                              text-slate-300
+                              sans-serif
+                              uppercase
+                              font-light
+                              md-pr-4
+                              {{ if .icon }}md:py-1{{ else }}md:py-0.5{{ end }}
+                              block
+                              hover:underline" href="{{ .url }}" {{ if .external }}target="_blank" {{ end }} {{ if .rel
+                        }}rel="{{ .rel }}" {{ end }}>
+                        {{ .name }}
+                    </a>
+                </li>
+                {{ end }}
+            </ul>
+        </nav>
+    </div>
+</footer>
