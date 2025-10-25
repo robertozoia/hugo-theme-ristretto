@@ -381,14 +381,26 @@ Use with: `hugo new posts/my-post.md`
 
 ### Styling
 
-The theme uses vanilla CSS with CSS custom properties for theming. Override variables in your site's CSS:
+The theme uses TailwindCSS for styling. To customize the theme:
 
-```css
-:root {
-  --primary-color: #your-color;
-  --font-family: 'Your Font', sans-serif;
+1. **Extend Tailwind Configuration**: Create or modify `tailwind.config.js` in your site root:
+
+```javascript
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#your-color',
+      },
+      fontFamily: {
+        sans: ['Your Font', 'sans-serif'],
+      },
+    },
+  },
 }
 ```
+
+2. **Add Custom Styles**: Create custom CSS in your site's `assets/css/` directory and import it in your layouts.
 
 ## License
 
