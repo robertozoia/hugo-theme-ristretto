@@ -17,6 +17,11 @@ title = 'My New Hugo Site'
   # GoatCounter analytics (optional)
   # goatcounter_code = 'your_goatcounter_code'
 
+  # Author information (used in RSS feed)
+  [params.author]
+    name = 'Your Name'
+    email = 'you@example.com'
+
 # Main navigation menu
 [menus]
 [[menus.main]]

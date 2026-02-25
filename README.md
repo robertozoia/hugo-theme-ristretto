@@ -63,6 +63,11 @@ reply_to_email = "you@example.com"
 mailchimp_user_id = "your_mailchimp_user_id"
 mailchimp_audience_id = "your_mailchimp_audience_id"
 goatcounter_code = "your_goatcounter_code"
+
+# Author information (used in RSS feed)
+[params.author]
+name = "Your Name"
+email = "you@example.com"
 ```
 
 ### Menu Configuration
