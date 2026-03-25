@@ -36,6 +36,10 @@
         </div>
         {{ partial "metadata_bottom.html" . }}
 
+        {{ if site.Params.show_comments }}
+          {{ partial "comments.html" . }}
+        {{ end }}
+
         <div class="mt-10">
             {{ if not .Params.disableSocialShare }}
             <div class="mb-5 flex space-x-2.5 items-end text-gray-700 dark:text-gray-300">
