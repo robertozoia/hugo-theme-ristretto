@@ -36,23 +36,24 @@
         </div>
         {{ partial "metadata_bottom.html" . }}
 
-        {{ if site.Params.show_comments }}
-          {{ partial "comments.html" . }}
-        {{ end }}
-
         <div class="mt-10">
             {{ if not .Params.disableSocialShare }}
             <div class="mb-5 flex space-x-2.5 items-end text-gray-700 dark:text-gray-300">
                 {{ partial "social_share.html" . }}
             </div>
             {{ end }}
+        </div>
 
-            {{ if not .Params.disableReplyByMail }}
-            <div>
-                {{ partial "reply_by_mail.html" . }}
-            </div>
-            {{ end }}
+        <div class="mt-10"></div>
+          {{ if not .Params.disableReplyByMail }}
+          <div>
+            {{ partial "reply_by_mail.html" . }}
+          </div>
+          {{ end }}
 
+          {{ if site.Params.show_comments }}
+            {{ partial "comments.html" . }}
+          {{ end }}
         </div>
 
     </article>
