@@ -245,9 +245,6 @@
   .relative {
     position: relative;
   }
-  .inset-x-0 {
-    inset-inline: calc(var(--spacing) * 0);
-  }
   .end {
     inset-inline-end: var(--spacing);
   }
@@ -256,9 +253,6 @@
   }
   .right-2 {
     right: calc(var(--spacing) * 2);
-  }
-  .bottom-0 {
-    bottom: calc(var(--spacing) * 0);
   }
   .left-0 {
     left: calc(var(--spacing) * 0);
@@ -445,6 +439,9 @@
   }
   .min-h-0 {
     min-height: calc(var(--spacing) * 0);
+  }
+  .min-h-screen {
+    min-height: 100vh;
   }
   .w-3\.5 {
     width: calc(var(--spacing) * 3.5);
