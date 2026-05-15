@@ -1651,6 +1651,41 @@ article ol li p {
   margin-top: -10px;
   display: inline;
 }
+article table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: 0.95em;
+  line-height: 1.4;
+}
+article table th, article table td {
+  border: 1px solid #d0d7de;
+  padding: 0.5em 0.75em;
+  text-align: left;
+  vertical-align: top;
+}
+article table th {
+  background-color: #f6f8fa;
+  font-weight: 700;
+}
+article table tbody tr:nth-child(even) td {
+  background-color: #fafbfc;
+}
+article table strong, article table b {
+  font-weight: 700;
+}
+.dark article table th, .dark article table td {
+  border-color: #404040;
+}
+.dark article table th {
+  background-color: #2d2d2d;
+}
+.dark article table tbody tr:nth-child(even) td {
+  background-color: #242424;
+}
 article figure {
   padding: 1em;
 }
