@@ -1,6 +1,11 @@
 @import "tailwindcss";
 
 @theme {
+    /* Source Sans 3 is self-hosted; the @font-face lives in
+       layouts/_partials/head/fonts.html so its URL can go through Hugo Pipes. */
+    --font-sans: "Source Sans 3", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
     --color-bg-light: #ffffff;
     --color-bg-dark: #1a1a1a;
     --color-text-light: #333333;
@@ -19,6 +24,18 @@
  * Configure TailwindCSS v4 to use class-based dark mode
  */
 @custom-variant dark (&:where(.dark, .dark *));
+
+/**
+ * Typography weights — the two knobs for the theme's overall "colour".
+ * Deliberately plain custom properties rather than @theme keys: a --font-weight-*
+ * entry in @theme would also generate an unwanted Tailwind utility class.
+ */
+:root {
+    --prose-weight: 400;
+    /* body copy; flip to 300 for a lighter look */
+    --display-weight: 300;
+    /* article h1 / h2 */
+}
 
 /**
  * Mobile accessibility: Ensure touch targets are at least 48x48px
@@ -86,6 +103,20 @@
     }
 }
 
+article {
+    font-weight: var(--prose-weight);
+}
+
+/**
+ * Tailwind's reset sets `b, strong { font-weight: bolder }`, which is *relative*:
+ * from a 300 base the CSS spec resolves `bolder` to 400, so bold prose stops
+ * looking bold. Pin it so the result no longer depends on --prose-weight.
+ */
+article strong,
+article b {
+    font-weight: 700;
+}
+
 article p {
     font-size: 16px;
     margin: 10px 0;
@@ -113,7 +144,7 @@ article h2 a {
 
 article h1 {
     font-size: 2.4em;
-    font-weight: 400;
+    font-weight: var(--display-weight);
     margin: 25px 0 15px 0 !important;
     line-height: 1.4em;
     color: #333;
@@ -125,7 +156,7 @@ article h1 {
 
 article h2 {
     font-size: 1.4em;
-    font-weight: 400;
+    font-weight: var(--display-weight);
     margin: 15px 0 10px 0 !important;
     line-height: 1.5;
     color: #333;
@@ -269,11 +300,6 @@ article table th {
 
 article table tbody tr:nth-child(even) td {
     background-color: #fafbfc;
-}
-
-article table strong,
-article table b {
-    font-weight: 700;
 }
 
 .dark article table th,

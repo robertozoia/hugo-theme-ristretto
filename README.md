@@ -386,27 +386,78 @@ Use with: `hugo new posts/my-post.md`
 
 ### Styling
 
-The theme uses TailwindCSS for styling. To customize the theme:
+The theme uses TailwindCSS v4, which is configured **in CSS** — there is no
+`tailwind.config.js`. Styles are authored in `src/input.css` and compiled to
+`assets/css/styles.css`, which is **committed to the repo**. Hugo never runs
+Tailwind, so after editing `src/input.css` you must rebuild:
 
-1. **Extend Tailwind Configuration**: Create or modify `tailwind.config.js` in your site root:
+```bash
+npm install
+npm run build:css      # one-shot
+npm run watch:css      # rebuild on change while developing
+```
 
-```javascript
-module.exports = {
-  theme: {
-    extend: {
-      colors: {
-        primary: '#your-color',
-      },
-      fontFamily: {
-        sans: ['Your Font', 'sans-serif'],
-      },
-    },
-  },
+Colors, fonts and other design tokens live in the `@theme` block at the top of
+`src/input.css`:
+
+```css
+@theme {
+    --font-sans: "Your Font", ui-sans-serif, system-ui, sans-serif;
+    --color-accent: rgb(252, 108, 12);
 }
 ```
+
+#### Fonts
+
+The theme ships **[Source Sans 3](https://github.com/adobe-fonts/source-sans)**,
+self-hosted from `assets/fonts/` — no Google Fonts request, so no visitor IPs go
+to a third party. Both files are variable woff2 covering the whole 200–900 weight
+axis (~28 KB each), so every weight the theme uses comes from one download. The
+`@font-face` rules are in `layouts/_partials/head/fonts.html` rather than in
+`src/input.css`, because in production the stylesheet is inlined into a `<style>`
+block, where a relative `url()` would resolve against the page URL and break.
+
+Two variables in `src/input.css` control the theme's overall weight:
+
+```css
+:root {
+    --prose-weight: 400;    /* body copy; 300 for a lighter look */
+    --display-weight: 300;  /* article h1 / h2 */
+}
+```
+
+If you set `--prose-weight: 300`, keep the `article strong, article b` rule.
+Tailwind's reset sets `font-weight: bolder` on those, and `bolder` is *relative*:
+from a 300 base the CSS spec resolves it to 400, so bold prose stops looking bold.
+
+To swap in a different font, replace the files in `assets/fonts/`, update the
+`@font-face` rules in `layouts/_partials/head/fonts.html`, and change `--font-sans`.
+Note that a family name containing a digit — like `"Source Sans 3"` — **must** be
+quoted; unquoted it is a CSS parse error.
+
+To use a CDN instead, delete `assets/fonts/` and `head/fonts.html` and put this in
+`layouts/_partials/head.html` — at the cost of two extra origins on the critical
+path and the privacy tradeoff above:
+
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap">
+```
+
+`/posts/typography-specimen/` is a kitchen-sink page for checking type changes —
+a weight ladder, headings, bold/italic, tables, code and footnotes on one page.
 
 2. **Add Custom Styles**: Create custom CSS in your site's `assets/css/` directory and import it in your layouts.
 
 ## License
 
 [Your License Here]
+
+### Bundled fonts
+
+[Source Sans 3](https://github.com/adobe-fonts/source-sans) by Adobe, licensed
+under the [SIL Open Font License 1.1](assets/fonts/OFL.txt). The font files in
+`assets/fonts/` are the Latin subsets published by
+[Fontsource](https://fontsource.org/fonts/source-sans-3); redistributing them
+requires keeping `OFL.txt` alongside them.

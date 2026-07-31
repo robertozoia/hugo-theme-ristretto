@@ -95,6 +95,15 @@ title = 'My New Hugo Site'
   url = '/index.xml'
   external = true
 
+# Hugo ships no built-in media type for .woff2 (only font/ttf and font/otf), so
+# resources.Get on a font falls back to the host's mime database -- present on
+# macOS, often absent on slim Linux CI images. Register it explicitly.
+[mediaTypes]
+  [mediaTypes.'font/woff2']
+    suffixes = ['woff2']
+  [mediaTypes.'font/woff']
+    suffixes = ['woff']
+
 [module]
 [module.hugoVersion]
   extended = false

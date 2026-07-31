@@ -3,8 +3,8 @@
 @layer theme, base, components, utilities;
 @layer theme {
   :root, :host {
-    --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-sans: "Source Sans 3", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
     --color-orange-300: oklch(83.7% 0.128 66.29);
@@ -406,6 +406,9 @@
   }
   .inline-flex {
     display: inline-flex;
+  }
+  .table {
+    display: table;
   }
   .aspect-\[2\/3\] {
     aspect-ratio: 2/3;
@@ -1485,6 +1488,10 @@
     }
   }
 }
+:root {
+  --prose-weight: 400;
+  --display-weight: 300;
+}
 @media (max-width: 767px) {
   nav a, nav button {
     min-height: 48px;
@@ -1528,6 +1535,12 @@
     justify-content: center;
   }
 }
+article {
+  font-weight: var(--prose-weight);
+}
+article strong, article b {
+  font-weight: 700;
+}
 article p {
   font-size: 16px;
   margin: 10px 0;
@@ -1548,7 +1561,7 @@ article h1 a, article h2 a {
 }
 article h1 {
   font-size: 2.4em;
-  font-weight: 400;
+  font-weight: var(--display-weight);
   margin: 25px 0 15px 0 !important;
   line-height: 1.4em;
   color: #333;
@@ -1558,7 +1571,7 @@ article h1 {
 }
 article h2 {
   font-size: 1.4em;
-  font-weight: 400;
+  font-weight: var(--display-weight);
   margin: 15px 0 10px 0 !important;
   line-height: 1.5;
   color: #333;
@@ -1673,9 +1686,6 @@ article table th {
 }
 article table tbody tr:nth-child(even) td {
   background-color: #fafbfc;
-}
-article table strong, article table b {
-  font-weight: 700;
 }
 .dark article table th, .dark article table td {
   border-color: #404040;

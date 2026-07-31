@@ -1,0 +1,13 @@
+{{- /* Renders a line of sample text at an explicit font-weight and size, for the
+     typography specimen page.
+
+     This exists because Goldmark strips raw HTML from Markdown unless
+     markup.goldmark.renderer.unsafe is enabled, and turning that on globally just
+     to style a demo page is not a trade worth making.
+
+     Usage: {{< specimen weight="300" size="2.4em" >}}Sample text{{< /specimen >}} */ -}}
+{{- $weight := .Get "weight" | default "400" -}}
+{{- $size := .Get "size" | default "1em" -}}
+<p style="{{ printf "font-weight:%s;font-size:%s;line-height:1.4;margin:0.35em 0" $weight $size | safeCSS }}">
+	{{- .Inner | .Page.RenderString -}}
+</p>

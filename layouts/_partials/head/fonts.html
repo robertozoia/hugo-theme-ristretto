@@ -1,0 +1,46 @@
+{{- /* Source Sans 3, self-hosted variable woff2 (SIL OFL 1.1 -- see assets/fonts/OFL.txt).
+     One file covers the whole 200-900 weight axis, so every weight the theme uses
+     (300/400/500/600/700) comes from a single download.
+
+     The @font-face rules live here rather than in src/input.css because
+     head/css.html INLINES the stylesheet into a <style> block in production, and a
+     relative url() inside inline CSS resolves against the *page* URL, not the
+     stylesheet -- so it would break on every page but one. Going through Hugo Pipes
+     is correct under any baseURL and guarantees the preload href and the @font-face
+     src are byte-identical (a mismatch means the font downloads twice).
+
+     Render this BEFORE head/css.html. Weights are set in src/input.css. */ -}}
+{{- $normal := resources.Get "fonts/source-sans-3-latin-wght-normal.woff2" -}}
+{{- $italic := resources.Get "fonts/source-sans-3-latin-wght-italic.woff2" -}}
+{{- if hugo.IsProduction -}}
+{{- with $normal }}{{ $normal = . | fingerprint "sha256" }}{{ end -}}
+{{- with $italic }}{{ $italic = . | fingerprint "sha256" }}{{ end -}}
+{{- end -}}
+{{- $latin := "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD" -}}
+{{- with $normal }}
+{{- /* crossorigin is required even same-origin for fonts, or the browser refetches. */}}
+<link rel="preload" href="{{ .RelPermalink }}" as="font" type="font/woff2" crossorigin>
+{{- end }}
+<style>
+{{- with $normal }}
+@font-face {
+	font-family: "Source Sans 3";
+	font-style: normal;
+	font-weight: 200 900;
+	font-display: swap;
+	src: url("{{ .RelPermalink }}") format("woff2");
+	unicode-range: {{ $latin | safeCSS }};
+}
+{{- end }}
+{{- with $italic }}
+{{- /* Not preloaded: fetched on demand, only on pages that actually render italics. */}}
+@font-face {
+	font-family: "Source Sans 3";
+	font-style: italic;
+	font-weight: 200 900;
+	font-display: swap;
+	src: url("{{ .RelPermalink }}") format("woff2");
+	unicode-range: {{ $latin | safeCSS }};
+}
+{{- end }}
+</style>
