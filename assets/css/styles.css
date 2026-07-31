@@ -1492,6 +1492,7 @@
 :root {
   --prose-weight: 400;
   --display-weight: 300;
+  --prose-size: 18px;
 }
 @media (max-width: 767px) {
   nav a, nav button {
@@ -1538,12 +1539,12 @@
 }
 article {
   font-weight: var(--prose-weight);
+  font-size: var(--prose-size);
 }
 article strong, article b {
   font-weight: 700;
 }
 article p {
-  font-size: 16px;
   margin: 10px 0;
 }
 article a {
@@ -1726,12 +1727,12 @@ article a.footnote-ref, article a.footnote-backref {
   text-decoration: none;
 }
 .footnotes {
-  font-size: 0.75rem;
-  line-height: 1rem;
+  font-size: 0.75em;
+  line-height: 1.4;
 }
 .footnotes ol li p {
-  font-size: 0.75rem;
-  line-height: 1rem;
+  font-size: 0.75em;
+  line-height: 1.4;
   margin-top: -10px;
   display: inline;
 }

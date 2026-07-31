@@ -35,6 +35,9 @@
     /* body copy; flip to 300 for a lighter look */
     --display-weight: 300;
     /* article h1; lower levels use a fixed rising scale */
+    --prose-size: 18px;
+    /* base size for article content; headings and quotes are em-based
+       off this, so raising it scales the whole article together */
 }
 
 /**
@@ -105,6 +108,7 @@
 
 article {
     font-weight: var(--prose-weight);
+    font-size: var(--prose-size);
 }
 
 /**
@@ -118,7 +122,6 @@ article b {
 }
 
 article p {
-    font-size: 16px;
     margin: 10px 0;
 }
 
@@ -378,13 +381,15 @@ article a.footnote-backref {
 }
 
 .footnotes {
-    font-size: 0.75rem;
-    line-height: 1rem;
+    /* em, not rem, so footnotes keep their proportion to --prose-size */
+    font-size: 0.75em;
+    line-height: 1.4;
 }
 
 .footnotes ol li p {
-    font-size: 0.75rem;
-    line-height: 1rem;
+    /* em, not rem, so footnotes keep their proportion to --prose-size */
+    font-size: 0.75em;
+    line-height: 1.4;
 
     margin-top: -10px;
     display: inline;

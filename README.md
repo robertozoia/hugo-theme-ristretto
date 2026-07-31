@@ -423,8 +423,16 @@ Two variables in `src/input.css` control the theme's overall weight:
 :root {
     --prose-weight: 400;    /* body copy; 300 for a lighter look */
     --display-weight: 300;  /* article h1 */
+    --prose-size: 18px;     /* base size for article content */
 }
 ```
+
+`--prose-size` sets the size of the whole article, not just paragraphs. Headings,
+blockquotes, tables, code and footnotes are all sized in `em` off that base, so
+changing this one value scales the article as a system and keeps every
+relationship intact. It is set to 18px rather than the more usual 16px because
+Source Sans 3 has a modest x-height and reads smaller than a system sans at the
+same nominal size.
 
 Headings below h1 use a fixed scale where weight rises as size falls
 (h2 1.75em/400 → h6 0.875em/700 uppercase), so the hierarchy holds no matter how
