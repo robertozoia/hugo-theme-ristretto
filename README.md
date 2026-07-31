@@ -421,7 +421,7 @@ Two variables in `src/input.css` control the theme's overall weight:
 
 ```css
 :root {
-    --prose-weight: 400;    /* body copy; 300 for a lighter look */
+    --prose-weight: 300;    /* body copy; 400 for a more solid look */
     --display-weight: 300;  /* article h1 */
     --prose-size: 18px;     /* base size for article content */
 }
@@ -455,9 +455,18 @@ Headings below h1 use a fixed scale where weight rises as size falls
 you set the two knobs above. Note that Tailwind's reset zeroes heading margins,
 so every level sets its own — if you add a heading rule, give it a margin.
 
-If you set `--prose-weight: 300`, keep the `article strong, article b` rule.
-Tailwind's reset sets `font-weight: bolder` on those, and `bolder` is *relative*:
-from a 300 base the CSS spec resolves it to 400, so bold prose stops looking bold.
+Body copy is Light (300), which makes the `article strong, article b` rule
+load-bearing — keep it. Tailwind's reset sets `font-weight: bolder` on those, and
+`bolder` is *relative*: from a 300 base the CSS spec resolves it to 400, so bold
+prose would stop looking bold.
+
+The monospace stack is pinned to 400 for a related reason: it isn't Source Sans 3,
+and faces like Menlo, Monaco and Consolas ship no Light weight, so an inherited
+300 would resolve differently depending on which font the OS supplies.
+
+Dark mode deliberately uses the same weight as light. Light-on-dark text blooms
+optically, so it reads *heavier* than the same weight on white, not lighter — if
+dark ever needs adjusting, soften `--color-text-dark` rather than adding weight.
 
 To swap in a different font, replace the files in `assets/fonts/`, update the
 `@font-face` rules in `layouts/_partials/head/fonts.html`, and change `--font-sans`.

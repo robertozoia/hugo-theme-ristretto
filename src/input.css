@@ -31,8 +31,8 @@
  * entry in @theme would also generate an unwanted Tailwind utility class.
  */
 :root {
-    --prose-weight: 400;
-    /* body copy; flip to 300 for a lighter look */
+    --prose-weight: 300;
+    /* body copy; 400 for a more solid look */
     --display-weight: 300;
     /* article h1; lower levels use a fixed rising scale */
     --prose-size: 18px;
@@ -112,6 +112,10 @@ article {
     color: var(--color-text-light);
 }
 
+/* No weight compensation here on purpose. Light-on-dark text blooms, so it reads
+   *heavier* than the same weight on white, not lighter -- the usual dark-mode
+   move is to go lighter if anything. If dark ever needs a lever, soften
+   --color-text-dark rather than adding weight. */
 .dark article {
     color: var(--color-text-dark);
 }
@@ -143,8 +147,8 @@ article a {
  * Heading scale.
  *
  * Weight rises as size falls. A heading has to out-signal the one below it, and
- * size alone stops doing that quickly: h1 carries Light comfortably at 38px,
- * h5 cannot at 16px. So only h1 uses --display-weight; the rest are fixed, which
+ * size alone stops doing that quickly: h1 carries Light comfortably at 43px,
+ * h5 cannot at 18px. So only h1 uses --display-weight; the rest are fixed, which
  * also means the hierarchy survives any change to the weight knobs at the top
  * of this file.
  *
@@ -235,6 +239,26 @@ article h6 {
     margin: 1rem;
 }
 
+/**
+ * Code runs on the system monospace stack, not Source Sans 3, and none of those
+ * faces (SF Mono, Menlo, Monaco, Consolas) ships a Light weight. Inheriting a
+ * 300 base would resolve upward to 400 on most systems -- browsers synthesize
+ * bold but never light -- and to something else wherever the stack lands on a
+ * family that does have one. Pin it so code renders the same everywhere.
+ */
+code,
+kbd,
+samp,
+pre {
+    font-weight: 400;
+}
+
+/* ...but inline code inside something already heavy should follow its context,
+   rather than punching a Regular hole in a bold heading or table header. */
+article :is(h1, h2, h3, h4, h5, h6, th, strong, b) code {
+    font-weight: inherit;
+}
+
 pre {
     background-color: #272822;
     padding: 0.48rem;
@@ -270,12 +294,14 @@ pre code {
     display: block;
 }
 
+/* Quoted material reads at the same size as the prose around it; the panel,
+   rule and colour are what set it apart, not a size drop. line-height matches
+   body -- 1.3 was chosen back when this was 0.8em and is too tight at 18px. */
 article blockquote {
     margin: 2em;
     border-left: 1px solid #ccc;
-    line-height: 1.3;
+    line-height: 1.5;
     padding: 10px 20px;
-    font-size: 0.8em;
     background-color: #eee;
     color: #555;
 }
@@ -387,15 +413,13 @@ article a.footnote-backref {
 
 .footnotes {
     /* em, not rem, so footnotes keep their proportion to --prose-size */
-    font-size: 0.75em;
-    line-height: 1.4;
+    font-size: 0.8em;
+    line-height: 1.5;
 }
 
 .footnotes ol li p {
-    /* em, not rem, so footnotes keep their proportion to --prose-size */
-    font-size: 0.75em;
-    line-height: 1.4;
-
+    /* Deliberately no font-size: this sits inside .footnotes, so a second em
+       would compound off it rather than off the article. */
     margin-top: -10px;
     display: inline;
 }

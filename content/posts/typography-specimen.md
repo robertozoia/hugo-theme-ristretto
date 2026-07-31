@@ -125,19 +125,19 @@ Ordered, which the theme renders with CSS counters:
 
 ## Blockquote
 
-> The details are not the details. They make the design. A blockquote is set
-> smaller and lighter than body copy, so it is a good place to check whether the
-> font holds together at reduced size and contrast.
+> The details are not the details. They make the design. A blockquote is set at
+> the same size and weight as body copy — the panel, the rule and the lower
+> contrast are what mark it as quoted, not a drop in size.
 
 ## Table
 
-| Weight | Name     | Used for                        |
-| ------ | -------- | ------------------------------- |
-| 300    | Light    | Display headings, metadata      |
-| 400    | Regular  | **Body copy**                   |
-| 500    | Medium   | Buttons, pagination             |
-| 600    | Semibold | Card headings, logo             |
-| 700    | Bold     | `article h3`, table headers     |
+| Weight | Name     | Used for                                   |
+| ------ | -------- | ------------------------------------------ |
+| 300    | Light    | **Body copy**, `article h1`, metadata      |
+| 400    | Regular  | `article h2`, code, footnotes              |
+| 500    | Medium   | Buttons, pagination                        |
+| 600    | Semibold | `article h3`, card headings, logo          |
+| 700    | Bold     | `article h4`–`h6`, bold text, table headers |
 
 The **bold cell** above is the regression check: table headers and bold cells
 must render heavier than the surrounding text.
@@ -161,5 +161,5 @@ func main() {
 
 Body text carrying a footnote reference.[^1]
 
-[^1]: Footnotes are set at 0.75rem — the smallest text on the page, and the
-first place a too-light weight becomes unreadable.
+[^1]: Footnotes are set at 0.8em of `--prose-size` — 14.4px, the smallest text
+on the page, and the first place a too-light weight becomes unreadable.
