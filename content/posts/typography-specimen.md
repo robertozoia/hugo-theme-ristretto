@@ -17,6 +17,64 @@ to judge as a block rather than a line, because weight and colour only really
 show up in mass. Look at the overall grey of the paragraph, then at whether
 individual letterforms still feel crisp at the edges.
 
+## The heading scale
+
+All six levels back to back with nothing between them, so the steps can be
+judged directly. Each should read as clearly subordinate to the one above —
+if any level out-shouts the one before it, the hierarchy has inverted.
+
+Weight rises as size falls: size alone stops separating levels once headings
+approach body size, so h6 ends up smaller than body copy and is set apart by
+case and tracking instead.
+
+# Heading level one
+
+## Heading level two
+
+### Heading level three
+
+#### Heading level four
+
+##### Heading level five
+
+###### Heading level six
+
+Same six with prose between them, which is how they actually land in a post —
+margins and the contrast against body text change the read considerably.
+
+# Heading level one
+
+Body copy after an h1. The display face carries Light comfortably at this size,
+which is the whole reason h1 is the one level still tied to `--display-weight`.
+
+## Heading level two
+
+Body copy after an h2. This is the workhorse — the level most posts use to break
+up sections, so it has to be unmistakable without being loud.
+
+### Heading level three
+
+Body copy after an h3. Small enough that Light would disappear here, hence the
+step up to Semibold.
+
+#### Heading level four
+
+Body copy after an h4. Barely larger than the text around it, so weight is doing
+almost all the work.
+
+##### Heading level five
+
+Body copy after an h5. Identical in size to body copy; only the weight separates
+them.
+
+###### Heading level six
+
+Body copy after an h6. Smaller than what surrounds it — the uppercase and
+tracking are what mark it as a heading at all.
+
+A specimen page is the one place several `h1`s are reasonable. Don't copy that
+part into a real post.
+
 ## The weight ladder
 
 The single most useful test. Each line is the same sentence at a different
@@ -46,18 +104,6 @@ Also inline: `monospace code`, a [link to somewhere](https://gohugo.io/),
 an abbreviation like HTML, and punctuation that reveals a font's character —
 "curly quotes", an em dash — like this — ellipsis…, plus accents for Spanish:
 ¿cómo está usted? ñ á é í ó ú ü ¡olé!
-
-### Heading level three
-
-All six levels are styled in `src/input.css`. Weight rises as size falls, so each
-level still out-signals the one below it once size alone stops doing the work.
-h6 is smaller than body copy and set apart by case and tracking instead.
-
-#### Heading level four
-
-##### Heading level five
-
-###### Heading level six
 
 ## Lists
 
