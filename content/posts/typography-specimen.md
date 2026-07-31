@@ -49,8 +49,9 @@ an abbreviation like HTML, and punctuation that reveals a font's character —
 
 ### Heading level three
 
-Headings run h1 through h3 in `src/input.css`; h4–h6 have no rules of their own,
-so the four below show what the browser defaults do.
+All six levels are styled in `src/input.css`. Weight rises as size falls, so each
+level still out-signals the one below it once size alone stops doing the work.
+h6 is smaller than body copy and set apart by case and tracking instead.
 
 #### Heading level four
 

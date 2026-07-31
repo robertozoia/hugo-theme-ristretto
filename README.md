@@ -422,9 +422,14 @@ Two variables in `src/input.css` control the theme's overall weight:
 ```css
 :root {
     --prose-weight: 400;    /* body copy; 300 for a lighter look */
-    --display-weight: 300;  /* article h1 / h2 */
+    --display-weight: 300;  /* article h1 */
 }
 ```
+
+Headings below h1 use a fixed scale where weight rises as size falls
+(h2 1.75em/400 → h6 0.875em/700 uppercase), so the hierarchy holds no matter how
+you set the two knobs above. Note that Tailwind's reset zeroes heading margins,
+so every level sets its own — if you add a heading rule, give it a margin.
 
 If you set `--prose-weight: 300`, keep the `article strong, article b` rule.
 Tailwind's reset sets `font-weight: bolder` on those, and `bolder` is *relative*:

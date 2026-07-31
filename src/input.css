@@ -34,7 +34,7 @@
     --prose-weight: 400;
     /* body copy; flip to 300 for a lighter look */
     --display-weight: 300;
-    /* article h1 / h2 */
+    /* article h1; lower levels use a fixed rising scale */
 }
 
 /**
@@ -131,15 +131,44 @@ article a {
     color: #4da3ff;
 }
 
-article h1 a,
-article h2 a {
-    text-decoration: none;
+/**
+ * Heading scale.
+ *
+ * Weight rises as size falls. A heading has to out-signal the one below it, and
+ * size alone stops doing that quickly: h1 carries Light comfortably at 38px,
+ * h5 cannot at 16px. So only h1 uses --display-weight; the rest are fixed, which
+ * also means the hierarchy survives any change to the weight knobs at the top
+ * of this file.
+ *
+ * Tailwind's reset zeroes the margin on every heading, so each level must set
+ * its own -- otherwise h3 and below sit flush against the surrounding text.
+ */
+article h1,
+article h2,
+article h3,
+article h4,
+article h5,
+article h6 {
     color: #333;
 }
 
-.dark article h1 a,
-.dark article h2 a {
+.dark article h1,
+.dark article h2,
+.dark article h3,
+.dark article h4,
+.dark article h5,
+.dark article h6 {
     color: #e5e5e5;
+}
+
+article h1 a,
+article h2 a,
+article h3 a,
+article h4 a,
+article h5 a,
+article h6 a {
+    text-decoration: none;
+    color: inherit;
 }
 
 article h1 {
@@ -147,33 +176,50 @@ article h1 {
     font-weight: var(--display-weight);
     margin: 25px 0 15px 0 !important;
     line-height: 1.4em;
-    color: #333;
-}
-
-.dark article h1 {
-    color: #e5e5e5;
 }
 
 article h2 {
-    font-size: 1.4em;
-    font-weight: var(--display-weight);
-    margin: 15px 0 10px 0 !important;
-    line-height: 1.5;
-    color: #333;
-}
-
-.dark article h2 {
-    color: #e5e5e5;
+    font-size: 1.75em;
+    font-weight: 400;
+    margin: 32px 0 10px 0 !important;
+    line-height: 1.3;
 }
 
 article h3 {
-    font-size: 1.1em;
-    font-weight: 700;
-    color: #333;
+    font-size: 1.35em;
+    font-weight: 600;
+    margin: 26px 0 8px 0;
+    line-height: 1.4;
 }
 
-.dark article h3 {
-    color: #e5e5e5;
+article h4 {
+    font-size: 1.15em;
+    font-weight: 700;
+    margin: 22px 0 6px 0;
+    line-height: 1.4;
+}
+
+article h5 {
+    font-size: 1em;
+    font-weight: 700;
+    margin: 20px 0 6px 0;
+    line-height: 1.4;
+}
+
+/* Smaller than body copy, so it is set apart by case and tracking rather than
+   by size, which has run out by this point. */
+article h6 {
+    font-size: 0.875em;
+    font-weight: 700;
+    margin: 20px 0 6px 0;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #666;
+}
+
+.dark article h6 {
+    color: #a3a3a3;
 }
 
 /* Code highlight  */
