@@ -5,7 +5,8 @@ title = 'My New Hugo Site'
 # Theme parameters
 [params]
   description = 'A personal blog about technology and ideas'
-  copyright = '© 2025 My New Hugo Site. All rights reserved.'
+  # `{year}` is replaced with the current year when the site is built.
+  copyright = '© {year} My New Hugo Site. All rights reserved.'
 
   # Email for reply functionality
   reply_to_email = 'hello@example.org'

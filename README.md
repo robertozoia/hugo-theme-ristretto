@@ -58,7 +58,7 @@ unsafe = true
 # Global parameters
 [params]
 description = "Your site description"
-copyright = "&copy; 2025 Your Name. All rights reserved."
+copyright = "&copy; {year} Your Name. All rights reserved."
 reply_to_email = "you@example.com"
 mailchimp_user_id = "your_mailchimp_user_id"
 mailchimp_audience_id = "your_mailchimp_audience_id"
@@ -69,6 +69,11 @@ goatcounter_code = "your_goatcounter_code"
 name = "Your Name"
 email = "you@example.com"
 ```
+
+In `copyright`, the token `{year}` is replaced with the current year each time the
+site is built, so the footer never goes stale. Everything else in the string is
+left alone, and it is rendered as Markdown — a config with a literal year still
+works unchanged. For a range, write it out: `"&copy; 2015–{year} Your Name"`.
 
 ### Menu Configuration
 

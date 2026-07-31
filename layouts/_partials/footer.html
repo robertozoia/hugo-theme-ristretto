@@ -28,7 +28,9 @@
                         Powered by <a target="_blank" href="https://gohugo.io" class="underline">Hugo</a> and Ristretto.
                     </li>
                     <li>
-                        {{ site.Params.copyright | markdownify }}
+                        {{- /* `{year}` in params.copyright becomes the current year at build
+                               time. A config with a literal year passes through untouched. */ -}}
+                        {{ replace (site.Params.copyright | default "") "{year}" (now.Format "2006") | markdownify }}
                     </li>
                 </ul>
             </div>
