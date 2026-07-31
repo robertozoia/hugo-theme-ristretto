@@ -434,6 +434,22 @@ relationship intact. It is set to 18px rather than the more usual 16px because
 Source Sans 3 has a modest x-height and reads smaller than a system sans at the
 same nominal size.
 
+Article text colour comes from the `@theme` tokens, not from utility classes on
+the layouts — so it is also a single place to change:
+
+```css
+@theme {
+    --color-text-light: #333333;           /* body and headings */
+    --color-text-dark: #e5e5e5;            /* the same, in dark mode */
+    --color-text-secondary-light: #666666; /* h6, muted text */
+    --color-text-secondary-dark: #a3a3a3;
+}
+```
+
+`#333` is deliberately softer than a true black; Tailwind's stock palette has no
+equivalent (`neutral-700` is `#404040`, `neutral-800` is `#262626`). On white it
+gives a 12.6:1 contrast ratio, still well past WCAG AAA.
+
 Headings below h1 use a fixed scale where weight rises as size falls
 (h2 1.75em/400 → h6 0.875em/700 uppercase), so the hierarchy holds no matter how
 you set the two knobs above. Note that Tailwind's reset zeroes heading margins,
