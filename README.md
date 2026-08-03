@@ -23,6 +23,12 @@ hugo mod init github.com/yourusername/yoursite
 hugo mod get -u
 ```
 
+The theme ships no `content/` directory, so importing it adds layouts, assets,
+static files and archetypes to your site and nothing else. The demo pages you
+see in the [example site](#developing-the-theme) — including the typography
+specimen — live under `exampleSite/`, which is its own Go module and is
+therefore excluded from the module consuming sites download.
+
 ### Traditional Installation
 
 Clone the theme into your `themes` directory:
@@ -488,10 +494,42 @@ path and the privacy tradeoff above:
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap">
 ```
 
-`/posts/typography-specimen/` is a kitchen-sink page for checking type changes —
-a weight ladder, headings, bold/italic, tables, code and footnotes on one page.
+The example site's `/posts/typography-specimen/` is a kitchen-sink page for
+checking type changes — a weight ladder, headings, bold/italic, tables, code and
+footnotes on one page. See [Developing the theme](#developing-the-theme) for how
+to run it.
 
 2. **Add Custom Styles**: Create custom CSS in your site's `assets/css/` directory and import it in your layouts.
+
+## Developing the theme
+
+The theme repository root holds only the theme itself. The demo site lives in
+`exampleSite/` and consumes the theme the same way a real site does — through a
+Hugo module import, with a `replace` directive pointing at the working tree — so
+mount and config problems surface in development rather than in someone's blog.
+
+Run it from the repository root:
+
+```bash
+hugo server -s exampleSite
+```
+
+Rebuild the stylesheet while working on `src/input.css`:
+
+```bash
+./run_tailwind.sh   # or: npm run watch:css
+```
+
+Two rules keep the theme from leaking demo material into consuming sites:
+
+- **Never add a `content/` directory to the repository root.** Hugo mounts a
+  module's `content/` into the importing site by default, so demo pages placed
+  there are published on every site that uses the theme. Put them in
+  `exampleSite/content/`.
+- **Keep the root `hugo.toml` minimal.** It is merged into consuming sites, so
+  anything defined there — `params`, `menus`, `baseURL` — becomes a silent
+  fallback for sites that don't override it. Demo configuration belongs in
+  `exampleSite/hugo.toml`.
 
 ## License
 
