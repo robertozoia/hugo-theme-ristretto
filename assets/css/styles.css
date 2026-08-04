@@ -1697,6 +1697,9 @@ article a.footnote-ref, article a.footnote-backref {
   font-size: 0.8em;
   line-height: 1.5;
 }
+.footnotes hr {
+  display: none;
+}
 .footnotes ol li p {
   margin-top: -10px;
   display: inline;

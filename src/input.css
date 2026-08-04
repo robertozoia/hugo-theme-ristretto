@@ -425,6 +425,13 @@ article a.footnote-backref {
     line-height: 1.5;
 }
 
+.footnotes hr {
+    /* Goldmark always emits a rule above the footnote list. Hidden rather than
+       styled away: the smaller type already reads as a separate section. Scoped
+       to .footnotes so an author's own `---` in the body keeps its rule. */
+    display: none;
+}
+
 .footnotes ol li p {
     /* Deliberately no font-size: this sits inside .footnotes, so a second em
        would compound off it rather than off the article. */
