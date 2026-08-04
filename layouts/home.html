@@ -1,4 +1,7 @@
 {{ define "main" }}
+{{- /* Front page: the latest post (two-paragraph excerpt by default, or in full
+     when `home_latest_post_full` is set), then the newsletter form, then a grid
+     of the next six posts. */ -}}
 <div class="container
       max-w-screen-xl
       mx-auto mb-auto
@@ -8,70 +11,74 @@
       md:px-52
       pb-16">
 
+  {{ $posts := where site.RegularPages "Section" "posts" }}
+  {{ $full := site.Params.home_latest_post_full }}
+
+  {{- /* Featured pool: exclusion list is configurable, and defaults to just
+       "notes". `isset` rather than `| default` because Hugo treats an empty slice
+       as falsy, which would make an explicit `= []` silently re-apply the
+       default instead of meaning "exclude nothing". */ -}}
+  {{ $featExclude := slice "notes" }}
+  {{ if isset site.Params "home_featured_exclude_categories" }}
+  {{ $featExclude = site.Params.home_featured_exclude_categories }}
+  {{ end }}
+  {{ $featPool := complement (where $posts "Params.categories" "intersect" $featExclude) $posts }}
+
+  {{- /* Grid pool: everything except "notes". Kept separate from the featured
+       pool so the two lists can differ -- e.g. book reviews out of the hero slot
+       but still present in the grid. */ -}}
+  {{ $gridPool := complement (where $posts "Params.categories" "intersect" (slice "notes")) $posts }}
+
+  {{- /* `first 1` rather than `index ... 0`, which errors on an empty pool. */ -}}
+  {{ $latest := false }}
+  {{ with first 1 $featPool }}{{ $latest = index . 0 }}{{ end }}
+
+  <!-- Latest post -->
+  {{ with $latest }}
+  {{ if eq .Layout "book-review" }}
+  {{ partial "book-review-body.html" (dict "post" . "single" false "full" $full) }}
+  {{ else }}
   <article class="pb-4 mb-10">
-    <div class="flex flex-col lg:flex-row items-start lg:items-center gap-6 lg:gap-8 w-full">
+    <header>
+      {{- /* `!mb-2` beats the unlayered `article h1 { margin: ... 15px !important }`
+           in src/input.css, tightening the gap to the date below. */ -}}
+      <h1 class="text-3xl font-sans font-normal text-gray-900 dark:text-gray-100 !mb-2">
+        <a href="{{ .RelPermalink }}"
+          class="!no-underline !text-gray-900 dark:!text-gray-100 hover:!text-blue-600 dark:hover:!text-blue-400 transition-colors duration-200">
+          {{ .Title }}
+        </a>
+      </h1>
 
-      <!-- Content Section (Left) -->
-      <div class="flex-1 order-2 lg:order-1">
-        <header>
-          {{ with .Params.title }}
-          <h1 class="text-3xl lg:text-4xl text-gray-900 dark:text-gray-100 font-sans font-medium antialiased">
-            {{ . }}
-          </h1>
-          {{ end }}
+      {{ partial "metadata_top.html" . }}
+    </header>
 
-          {{ with .Params.tagline }}
-          <p class="mt-2 text-lg lg:text-xl text-gray-700 dark:text-gray-300 font-sans font-normal antialiased">
-            {{ . }}
-          </p>
-          {{ end }}
-        </header>
-
-        {{ with .Params.subheading }}
-        <div class="mt-4 text-base/6 lg:text-lg/7 font-sans font-normal antialiased text-gray-600 dark:text-gray-400">
-          {{ . }}
-        </div>
-        {{ end }}
-
-        <div class="mt-4 text-base/6 lg:text-lg/7 font-sans text-gray-900 dark:text-gray-100 text">
-          {{ .Content }}
-        </div>
-      </div>
-
-      <!-- Hero Image Section (Right) -->
-
-      <div class="mt-10 flex-shrink-0 order-1 lg:order-2 self-center lg:self-start">
-        {{ if .Params.hero_image }}
-        <div class="w-32 h-32 lg:w-48 lg:h-48 rounded-full overflow-hidden shadow-lg">
-          <img src="{{ .Params.hero_image | relURL }}" alt="{{ .Title }}" class="w-full h-full object-cover">
-        </div>
-        {{ end }}
-
-        <!-- CTA Buttons under photo -->
-        <div class="mt-4 flex flex-col gap-3 w-32 lg:w-48">
-          {{ if .Params.cta_primary_label }}
-          <a href="{{ .Params.cta_primary_link }}"
-            class="inline-block text-center px-4 py-2 !text-white !text-sm !font-medium rounded-md transition-colors duration-200 !no-underline hover:!bg-orange-600"
-            style="background-color: rgb(252, 108, 12);">
-            {{ .Params.cta_primary_label }}
-          </a>
-          {{ end }}
-
-          {{ if .Params.cta_secondary_label }}
-          <a href="{{ .Params.cta_secondary_link }}"
-            class="inline-block text-center px-4 py-2 !bg-gray-100 dark:!bg-gray-700 !hover:bg-gray-200 dark:!hover:bg-gray-600 !text-gray-900 dark:!text-gray-100 !text-sm !font-medium rounded-md transition-colors duration-200 !no-underline">
-            {{ .Params.cta_secondary_label }}
-          </a>
-          {{ end }}
-        </div>
-      </div>
-
+    {{ with .Resources.GetMatch (.Params.cover | default "") }}
+    <div class="mt-6">
+      <img src="{{ .RelPermalink }}" alt="{{ $.Params.cover_alt }}" class="rounded-lg">
     </div>
-    {{ if not .Params.disableSubscribeForm }}
-    {{ partial "subscribe_form.html" . }}
     {{ end }}
-  </article>
 
+    <div class="mt-6 font-sans">
+      {{ partial "post-body.html" (dict "post" . "full" $full) }}
+    </div>
+  </article>
+  {{ end }}
+  {{ end }}
+
+  {{ if not .Params.disableSubscribeForm }}
+  {{ partial "subscribe_form.html" . }}
+  {{ end }}
+
+  {{- /* Recent articles: the grid pool minus whichever post is featured above.
+       Subtracted by permalink rather than `after 1`, because once the two
+       exclusion lists differ the featured post is not necessarily the grid
+       pool's first entry. */ -}}
+  {{ $grid := $gridPool }}
+  {{ with $latest }}
+  {{ $grid = where $grid "RelPermalink" "!=" .RelPermalink }}
+  {{ end }}
+
+  {{ if $grid }}
   <div class="border-t-1 border-gray-300 dark:border-gray-700"></div>
   <h2 class="
   text-2xl
@@ -85,18 +92,11 @@
   antialiased
   ">Recent Articles</h2>
   <div class="archive grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-    {{ $posts := where site.RegularPages "Section" "posts" }}
-    {{ with .Params.featured_categories }}
-    {{ $categories := . }}
-    {{ $posts = where $posts "Params.categories" "intersect" $categories }}
-    {{ end }}
-    {{ range first 6 $posts }}
+    {{ range first 6 $grid }}
     {{ partial "post-card.html" (dict "post" . "width" "100%" "height" "320px") }}
     {{ end }}
   </div>
-
-
-
+  {{ end }}
 
 </div>
 {{ end }}

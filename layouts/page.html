@@ -21,7 +21,9 @@
     <article class="pb-4 mb-10">
         <header>
             {{ with .Params.title }}
-            <h1 data-pagefind-meta="title" class="text-3xl font-sans font-normal text-gray-900 dark:text-gray-100">
+            {{- /* `!mb-2` beats the unlayered `article h1 { margin: ... 15px !important }`
+                 in src/input.css, tightening the gap to the date below. */ -}}
+            <h1 data-pagefind-meta="title" class="text-3xl font-sans font-normal text-gray-900 dark:text-gray-100 !mb-2">
                 {{ . }}
             </h1>
             {{ end }}

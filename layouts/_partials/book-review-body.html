@@ -1,0 +1,124 @@
+{{- /*
+Book Review body
+
+The article for a book review: "Title by Author" header, then the cover and rating
+in a left column with the review text on the right. Shared by the book-review page
+template and the home page's featured slot, so both render the same thing.
+
+Usage:
+  {{ partial "book-review-body.html" (dict "post" . "single" true "full" true) }}
+
+Parameters:
+- post:   the page object (required)
+- single: true only when this is the post's own page. Adds the data-pagefind-meta
+          attributes (on any other page they would attribute the book's title and
+          cover to that page instead), leaves the heading unlinked, and appends the
+          tags row, share buttons and reply-by-mail box. False links the heading to
+          the post and drops all of that.
+- full:   passed through to post-body.html -- true for the whole review, false for
+          a two-paragraph excerpt with a read-more link.
+
+The container div stays with the caller: the page uses max-w-screen-lg, the home
+page max-w-screen-xl.
+*/ -}}
+
+{{- $post := .post -}}
+{{- $single := .single | default false -}}
+{{- $full := .full | default false -}}
+
+{{- /* Build custom title: "Book Title by Author" or fallback to page title */ -}}
+{{- $heading := $post.Title -}}
+{{- with $post.Params.book_title -}}
+{{- $heading = . -}}
+{{- with $post.Params.book_author -}}
+{{- $heading = printf "%s by %s" $heading . -}}
+{{- end -}}
+{{- end -}}
+
+<article class="pb-4 mb-10">
+    <header class="mb-8">
+        {{- /* `!mb-2` beats the unlayered `article h1 { margin: ... 15px !important }`
+             in src/input.css; the old plain `mb-4` never applied at all. */ -}}
+        <h1 {{ if $single }}data-pagefind-meta="title" {{ end }}class="text-3xl font-sans font-normal text-gray-900 dark:text-gray-100 !mb-2">
+            {{- if $single -}}
+            {{ $heading }}
+            {{- else -}}
+            <a href="{{ $post.RelPermalink }}"
+                class="!no-underline !text-gray-900 dark:!text-gray-100 hover:!text-blue-600 dark:hover:!text-blue-400 transition-colors duration-200">{{ $heading }}</a>
+            {{- end -}}
+        </h1>
+        {{ partial "metadata_top.html" $post }}
+        <div class="border-b border-neutral-600 dark:border-neutral-500 w-14 h-8 mb-8"></div>
+    </header>
+
+    <!-- Book Review Layout: Cover on left, content on right -->
+    <div class="flex flex-col md:flex-row gap-12">
+        <!-- Left Column: Book Cover -->
+        <div class="md:w-1/3 lg:w-1/4 flex-shrink-0">
+            <!-- Book Cover -->
+            <div class="mb-4">
+                {{- /* Resolve book cover as page resource or absolute path */ -}}
+                {{ $bookCoverParam := $post.Params.cover }}
+                {{ $bookCover := "" }}
+                {{ if $bookCoverParam }}
+                {{ $resource := $post.Resources.Get $bookCoverParam }}
+                {{ if $resource }}
+                {{ $bookCover = $resource.RelPermalink }}
+                {{ else }}
+                {{ $bookCover = path.Join $post.RelPermalink $bookCoverParam }}
+                {{ end }}
+                {{ end }}
+
+                {{ if $bookCover }}
+                <img {{ if $single }}data-pagefind-meta="image[src]" {{ end }}src="{{ $bookCover }}"
+                    alt="{{ $post.Params.book_cover_alt | default (printf " %s by %s" $post.Params.book_title
+                    $post.Params.book_author) }}" class="w-full max-w-xs mx-auto md:mx-0 rounded-lg shadow-lg"
+                    style="aspect-ratio: 2/3; object-fit: cover;">
+                {{ else }}
+                <div class="w-full max-w-xs mx-auto md:mx-0 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-lg flex items-center justify-center text-gray-500 dark:text-gray-400"
+                    style="aspect-ratio: 2/3;">
+                    <div class="text-center">
+                        <div class="text-4xl mb-2">📚</div>
+                        <div class="text-sm">No Cover</div>
+                    </div>
+                </div>
+                {{ end }}
+            </div>
+
+            <!-- Rating under cover -->
+            {{ with $post.Params.rating }}
+            <div class="text-left md:text-left">
+                <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 font-medium">
+                    <span class="mr-2 text-lg">⭐</span>
+                    {{ . }}
+                </div>
+            </div>
+            {{ end }}
+        </div>
+
+        <!-- Right Column: Review Content -->
+        <div class="md:w-2/3 lg:w-3/4">
+            <div class="prose prose-gray max-w-none font-sans">
+                {{ partial "post-body.html" (dict "post" $post "full" $full) }}
+            </div>
+
+            {{ if $single }}
+            {{ partial "metadata_bottom.html" $post }}
+
+            <div class="mt-10">
+                {{ if not $post.Params.disableSocialShare }}
+                <div class="mb-5 flex space-x-2.5 items-end text-gray-700 dark:text-gray-300">
+                    {{ partial "social_share.html" $post }}
+                </div>
+                {{ end }}
+
+                {{ if not $post.Params.disableReplyByMail }}
+                <div>
+                    {{ partial "reply_by_mail.html" $post }}
+                </div>
+                {{ end }}
+            </div>
+            {{ end }}
+        </div>
+    </div>
+</article>

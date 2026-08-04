@@ -1,0 +1,39 @@
+{{- /*
+Post body — either the whole post or a two-paragraph excerpt with a read-more link.
+
+Usage:
+  {{ partial "post-body.html" (dict "post" . "full" false) }}
+
+Parameters:
+- post: the page object (required)
+- full: true renders .Content untouched; false (default) renders the first two
+        paragraphs followed by "Read more ->"
+
+Truncation works on the rendered HTML because Goldmark emits every paragraph as
+<p>...</p>. The footnotes block is dropped first: it always trails the post, so it
+would otherwise inflate the paragraph count, and its anchors don't exist wherever
+an excerpt is shown. Footnote markers surviving inside the excerpt go too, for the
+same reason. A post of two paragraphs or fewer renders whole, with no link.
+
+Caveat: the count includes <p> nested in blockquotes and lists, so a post whose
+second block is a blockquote shows that quote as its "second paragraph". Hugo has
+no HTML parser and .Summary is word-based, so this is the practical approximation.
+An unclosed <blockquote> or <ul> at the cut is closed by the browser at the
+enclosing element -- no balancing needed here.
+*/ -}}
+
+{{- $post := .post -}}
+{{- if .full -}}
+{{ $post.Content }}
+{{- else -}}
+{{- $body := replaceRE `(?s)<div class="footnotes".*?</div>` "" $post.Content -}}
+{{- $parts := split $body "</p>" -}}
+{{- if le (sub (len $parts) 1) 2 -}}
+{{ $body | safeHTML }}
+{{- else -}}
+{{ replaceRE `<sup id="fnref[^"]*">.*?</sup>` "" (printf "%s</p>%s</p>" (index $parts 0) (index $parts 1)) | safeHTML }}
+<p class="mt-4">
+    <a href="{{ $post.RelPermalink }}" class="!no-underline hover:!underline">Read more &rarr;</a>
+</p>
+{{- end -}}
+{{- end -}}

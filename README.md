@@ -70,6 +70,10 @@ mailchimp_user_id = "your_mailchimp_user_id"
 mailchimp_audience_id = "your_mailchimp_audience_id"
 goatcounter_code = "your_goatcounter_code"
 
+# Homepage
+home_latest_post_full = false
+home_featured_exclude_categories = ["notes"]
+
 # Author information (used in RSS feed)
 [params.author]
 name = "Your Name"
@@ -232,16 +236,24 @@ Example: If a post has `categories: ["tech", "startups"]` and the section has `c
 
 ### Homepage Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `hero_image` | string | No | Hero image (displayed as circle) |
-| `tagline` | string | No | Tagline below title |
-| `subheading` | string | No | Introduction text (supports markdown) |
-| `cta_primary_label` | string | No | Primary call-to-action button text |
-| `cta_primary_link` | string | No | Primary button URL |
-| `cta_secondary_label` | string | No | Secondary button text |
-| `cta_secondary_link` | string | No | Secondary button URL |
-| `featured_categories` | array | No | Categories to feature on homepage |
+The homepage leads with the most recent post, followed by the newsletter form and
+a grid of the next six posts. It is configured from `[params]` in `hugo.toml`, not
+from front matter:
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `home_latest_post_full` | boolean | `false` | Render the featured post in full. When `false`, its first two paragraphs are shown with a "Read more →" link. |
+| `home_featured_exclude_categories` | array | `["notes"]` | Categories barred from the featured slot. Set to `[]` to exclude nothing. |
+
+Posts excluded from the featured slot still appear in the "Recent Articles" grid —
+only `notes` is kept out of that. So excluding `book-reviews` here keeps reviews
+out of the hero position while leaving them in the grid.
+
+A post whose front matter sets `layout: book-review` is featured using the
+book-review layout (cover and rating on the left, review text on the right), the
+same one its own page uses.
+
+Body copy in `content/_index.md` is not rendered on the homepage.
 
 ### Control Parameters
 

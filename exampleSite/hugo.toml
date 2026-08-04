@@ -15,6 +15,15 @@ path = "github.com/robertozoia/hugo-theme-ristretto"
   # Email for reply functionality
   reply_to_email = 'hello@example.org'
 
+  # Home page: the latest post leads the page. Set to true to render it in full;
+  # false (the default) shows its first two paragraphs and a "Read more ->" link.
+  home_latest_post_full = false
+
+  # Categories barred from that featured slot. They still appear in the
+  # "Recent Articles" grid below it -- only `notes` is kept out of that.
+  # An explicit empty list means nothing is excluded.
+  home_featured_exclude_categories = ['notes']
+
   # Mailchimp newsletter integration (optional)
   mailchimp_user_id = 'your_mailchimp_user_id'
   mailchimp_audience_id = 'your_mailchimp_audience_id'

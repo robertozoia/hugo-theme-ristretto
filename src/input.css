@@ -16,6 +16,14 @@
     --color-border-dark: #404040;
     --color-accent: rgb(252, 108, 12);
     --color-accent-hover: rgb(232, 88, 0);
+
+    /* Corner radii, halved from Tailwind's defaults (md .375rem, lg .5rem) for a
+       squarer look. Every `rounded-md`/`rounded-lg` in the templates reads these,
+       so covers, post cards, book cards, the subscribe box, search results and the
+       header menu all move together. `rounded-full` is calc(infinity * 1px) and is
+       deliberately unaffected -- the rating and category pills stay pills. */
+    --radius-md: 0.1875rem;
+    --radius-lg: 0.25rem;
 }
 
 /**
