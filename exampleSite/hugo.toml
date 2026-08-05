@@ -24,6 +24,12 @@ path = "github.com/robertozoia/hugo-theme-ristretto"
   # An explicit empty list means nothing is excluded.
   home_featured_exclude_categories = ['notes']
 
+  # A section whose _index.md sets no `categories` lists every post, minus the
+  # categories named here -- use it for one merged listing in place of several
+  # topic sections. Sections that do set `categories` keep their own include
+  # filter and ignore this.
+  section_exclude_categories = []
+
   # Mailchimp newsletter integration (optional)
   mailchimp_user_id = 'your_mailchimp_user_id'
   mailchimp_audience_id = 'your_mailchimp_audience_id'

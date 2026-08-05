@@ -74,6 +74,9 @@ goatcounter_code = "your_goatcounter_code"
 home_latest_post_full = false
 home_featured_exclude_categories = ["notes"]
 
+# Section listings
+section_exclude_categories = []
+
 # Author information (used in RSS feed)
 [params.author]
 name = "Your Name"
@@ -207,6 +210,32 @@ Section description goes here.
 5. Posts appear in reverse chronological order
 
 Example: If a post has `categories: ["tech", "startups"]` and the section has `categories: ["tech", "ai"]`, the post appears because "tech" matches.
+
+### Merged Sections
+
+Leave `categories` off a section's `_index.md` and it becomes a merged listing:
+every post in the `posts` section, minus the categories named in
+`section_exclude_categories`. Use it to replace several topic sections with one
+combined view.
+
+```toml
+# hugo.toml
+[params]
+section_exclude_categories = ["book-reviews"]
+```
+
+```yaml
+# content/posts/_index.md
+---
+title: "Writing"
+aliases: ["/tech-ai/", "/insights/"]   # keep the old section URLs working
+---
+```
+
+The exclusion applies **only** to sections without their own `categories`. A
+section that does set them keeps its include filter and ignores the list — so a
+section devoted to an excluded category still lists its posts, which is what you
+want for a book-reviews landing page alongside a merged feed that omits them.
 
 ## Front Matter Parameters
 

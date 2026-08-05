@@ -16,6 +16,16 @@ followed by a filtered collection of posts in a 3x4 grid layout.
 {{- $filteredPosts := $allPosts }}
 {{- if $pageCategories }}
 {{- $filteredPosts = where $allPosts "Params.categories" "intersect" $pageCategories }}
+{{- else }}
+{{- /* No include list on the section, so this is a merged listing: everything
+     in the posts section, minus any category named in the site-level
+     `section_exclude_categories`. Sections that do carry `categories` keep
+     their own include filter and ignore the exclusion, so a section devoted
+     to an excluded category (book reviews, say) still lists its posts. */ -}}
+{{- $filteredPosts = where $allPosts "Section" "posts" }}
+{{- with site.Params.section_exclude_categories }}
+{{- $filteredPosts = complement (where $filteredPosts "Params.categories" "intersect" .) $filteredPosts }}
+{{- end }}
 {{- end }}
 
 {{- /* Pagination (12 posts per page for 3x4 grid) */ -}}
@@ -56,10 +66,13 @@ followed by a filtered collection of posts in a 3x4 grid layout.
     {{- if gt (len $paginator.Pages) 0 }}
     <section class="mb-12">
 
-        <!-- 3-column grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+        {{- /* Cards fill their grid cell (width 100%) rather than sitting at a
+             fixed 300px centred in it, so the outer edges line up with the
+             container -- and the visible space between them is then the grid gap
+             itself. Same gap as the home page grid. */ -}}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {{- range $paginator.Pages }}
-            {{- partial "post-card.html" (dict "post" .) }}
+            {{- partial "post-card.html" (dict "post" . "width" "100%" "height" "296px") }}
             {{- end }}
         </div>
     </section>
