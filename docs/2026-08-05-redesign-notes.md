@@ -1,4 +1,6 @@
 # Redesign session — 2026-08-05
+Coding agent:  Claude Opus 5 (xhigh)
+
 
 Ten commits, `7e3b4b9..cf0be69`. 21 files, +563/−436. Driven from the
 `hugo-zoia-org` blog, but everything here is theme-side and applies to any
