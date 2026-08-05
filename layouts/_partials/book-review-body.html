@@ -106,12 +106,6 @@ page max-w-screen-xl.
             {{ partial "metadata_bottom.html" $post }}
 
             <div class="mt-10">
-                {{ if not $post.Params.disableSocialShare }}
-                <div class="mb-5 flex space-x-2.5 items-end text-gray-700 dark:text-gray-300">
-                    {{ partial "social_share.html" $post }}
-                </div>
-                {{ end }}
-
                 {{ if not $post.Params.disableReplyByMail }}
                 <div>
                     {{ partial "reply_by_mail.html" $post }}

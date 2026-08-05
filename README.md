@@ -291,7 +291,6 @@ Disable specific features on individual pages:
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `disableSubscribeForm` | boolean | false | Hide newsletter subscription form |
-| `disableSocialShare` | boolean | false | Hide social sharing buttons |
 | `disableReplyByMail` | boolean | false | Hide "reply by email" option |
 
 Example:
@@ -299,7 +298,7 @@ Example:
 ---
 title: "About"
 disableSubscribeForm: true
-disableSocialShare: true
+disableReplyByMail: true
 ---
 ```
 
@@ -365,16 +364,6 @@ mailchimp_audience_id = "your_audience_id"
 ```
 
 The subscription form appears at the bottom of posts (unless `disableSubscribeForm: true`).
-
-### Social Sharing
-
-Social sharing buttons appear automatically below post content. Supports:
-- Facebook
-- Twitter/X
-- LinkedIn
-- Email
-
-Disable per page with `disableSocialShare: true`.
 
 ### Reply by Email
 
