@@ -34,10 +34,6 @@ path = "github.com/robertozoia/hugo-theme-ristretto"
   mailchimp_user_id = 'your_mailchimp_user_id'
   mailchimp_audience_id = 'your_mailchimp_audience_id'
 
-  # KipuThread comments (optional)
-  # show_comments = true
-  # kiputhread_blog_id = 'your-blog-id'
-
   # GoatCounter analytics (optional)
   # goatcounter_code = 'your_goatcounter_code'
 
