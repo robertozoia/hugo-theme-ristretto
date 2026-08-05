@@ -34,6 +34,20 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /**
+ * Tell the browser which scheme is active so native UI follows the page:
+ * form fields, scrollbars, spellcheck underlines and the like are drawn by the
+ * platform, not by our CSS, and default to their light styling otherwise. The
+ * `.dark` class is set on <html>, so :root is the right hook.
+ */
+:root {
+    color-scheme: light;
+}
+
+:root.dark {
+    color-scheme: dark;
+}
+
+/**
  * Typography weights — the two knobs for the theme's overall "colour".
  * Deliberately plain custom properties rather than @theme keys: a --font-weight-*
  * entry in @theme would also generate an unwanted Tailwind utility class.

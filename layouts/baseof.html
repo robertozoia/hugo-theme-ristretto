@@ -6,10 +6,15 @@
   {{ block "per_page_scripts" . }}
   {{ end }}
   <script>
-    // Dark mode initialization - must run before body renders to avoid flash
+    // Dark mode initialization - must run before body renders to avoid flash.
+    // An explicit choice from the toggle is stored and always wins; without one
+    // we follow the operating system.
     (function() {
-      const theme = localStorage.getItem('theme') || 'light';
-      if (theme === 'dark') {
+      var stored = localStorage.getItem('theme');
+      var dark = stored
+        ? stored === 'dark'
+        : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (dark) {
         document.documentElement.classList.add('dark');
       }
     })();

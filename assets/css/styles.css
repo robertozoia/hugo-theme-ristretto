@@ -1411,6 +1411,12 @@
   }
 }
 :root {
+  color-scheme: light;
+}
+:root.dark {
+  color-scheme: dark;
+}
+:root {
   --prose-weight: 300;
   --display-weight: 300;
   --prose-size: 18px;
