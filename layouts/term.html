@@ -14,13 +14,13 @@
     {{- end }}
 
     <!-- Page Title -->
-    <h1 class="text-4xl font-bold mb-6 pt-6 text-gray-900 font-sans antialiased">
+    <h1 class="text-4xl font-bold mb-6 pt-6 text-gray-900 dark:text-gray-100 font-sans antialiased">
       Tag: {{ .Title }}
     </h1>
 
     <!-- Page Text Content -->
     {{- if .Content }}
-    <div class="max-w-3xl mx-auto text-lg text-gray-700 font-light leading-relaxed mb-12">
+    <div class="max-w-3xl mx-auto text-lg text-gray-700 dark:text-gray-300 font-light leading-relaxed mb-12">
       {{ .Content }}
     </div>
     {{- end }}
@@ -37,10 +37,12 @@
   {{- if gt (len $paginator.Pages) 0 }}
   <section class="mb-12">
 
-    <!-- 3-column grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+    {{- /* Same card geometry as section.html: cards fill their cell so the outer
+         edges land on the container line, and the visible space between them is
+         the grid gap itself. */ -}}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
       {{- range $paginator.Pages }}
-      {{- partial "post-card.html" (dict "post" .) }}
+      {{- partial "post-card.html" (dict "post" . "width" "100%" "height" "296px") }}
       {{- end }}
     </div>
   </section>
@@ -50,7 +52,7 @@
   <nav class="flex justify-center items-center space-x-4 mt-12">
     {{- if $paginator.HasPrev }}
     <a href="{{ $paginator.Prev.URL }}"
-      class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md text-gray-700 font-medium transition-colors duration-200">
+      class="px-4 py-2 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 rounded-md text-gray-700 dark:text-gray-200 font-medium transition-colors duration-200">
       ← Previous
     </a>
     {{- end }}
@@ -74,12 +76,12 @@
       {{- end }}
       {{- range seq $startPage $endPage }}
       {{- if eq . $currentPage }}
-      <span class="px-3 py-2 bg-blue-500 text-white rounded-md font-medium">
+      <span class="px-3 py-2 bg-blue-500 dark:bg-blue-600 text-white rounded-md font-medium">
         {{ . }}
       </span>
       {{- else }}
       <a href="{{ (index $.Paginator.Pagers (sub . 1)).URL }}"
-        class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-md text-gray-700 font-medium transition-colors duration-200">
+        class="px-3 py-2 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 rounded-md text-gray-700 dark:text-gray-200 font-medium transition-colors duration-200">
         {{ . }}
       </a>
       {{- end }}
@@ -88,14 +90,14 @@
 
     {{- if $paginator.HasNext }}
     <a href="{{ $paginator.Next.URL }}"
-      class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md text-gray-700 font-medium transition-colors duration-200">
+      class="px-4 py-2 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 rounded-md text-gray-700 dark:text-gray-200 font-medium transition-colors duration-200">
       Next →
     </a>
     {{- end }}
   </nav>
 
   <!-- Pagination Info -->
-  <div class="text-center mt-4 text-gray-600 text-sm">
+  <div class="text-center mt-4 text-gray-600 dark:text-gray-400 text-sm">
     Showing
     {{ add (mul (sub $paginator.PageNumber 1) $paginator.PagerSize) 1 }} -
     {{ add (mul (sub $paginator.PageNumber 1) $paginator.PagerSize) (len $paginator.Pages) }}
@@ -107,7 +109,7 @@
   {{- else }}
   <!-- No posts found message -->
   <section class="text-center py-12">
-    <div class="text-gray-500 text-lg">
+    <div class="text-gray-500 dark:text-gray-400 text-lg">
       No posts found.
     </div>
   </section>
