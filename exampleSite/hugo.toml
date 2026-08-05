@@ -81,19 +81,24 @@ path = "github.com/robertozoia/hugo-theme-ristretto"
 #   [menus.main.params]
 #     button = true
 
-# Categories dropdown menu items
-[[menus.categories]]
+# Dropdown items: any main-menu entry naming another entry's identifier as its
+# `parent` is nested under it, and that parent renders as a dropdown. Define as
+# many dropdowns as you need this way.
+[[menus.main]]
   name = 'Technology'
+  parent = 'categories'
   url = '/categories/technology'
   weight = 10
 
-[[menus.categories]]
+[[menus.main]]
   name = 'Programming'
+  parent = 'categories'
   url = '/categories/programming'
   weight = 20
 
-[[menus.categories]]
+[[menus.main]]
   name = 'Design'
+  parent = 'categories'
   url = '/categories/design'
   weight = 30
 

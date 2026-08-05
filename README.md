@@ -90,7 +90,8 @@ works unchanged. For a range, write it out: `"&copy; 2015–{year} Your Name"`.
 
 ### Menu Configuration
 
-Configure your navigation menus:
+Configure your navigation menus. Any main-menu entry that has children renders as
+a dropdown, so you can define several:
 
 ```toml
 # Main navigation
@@ -99,15 +100,16 @@ name = "Home"
 url = "/"
 weight = 1
 
+# A dropdown: an entry with an identifier, plus entries naming it as `parent`
 [[menus.main]]
-name = "Categories"
-identifier = "categories"
+name = "Reading"
+identifier = "reading"
 weight = 2
 
-# Categories submenu
-[[menus.categories]]
-name = "Tech & AI"
-url = "/tech-ai"
+[[menus.main]]
+name = "Book Reviews"
+parent = "reading"
+url = "/book-reviews"
 weight = 1
 
 # Footer menu
