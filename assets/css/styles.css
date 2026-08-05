@@ -46,9 +46,6 @@
     --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
-    --breakpoint-md: 48rem;
-    --breakpoint-lg: 64rem;
-    --breakpoint-xl: 80rem;
     --container-xs: 20rem;
     --container-2xl: 42rem;
     --container-3xl: 48rem;
@@ -355,9 +352,6 @@
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
   }
-  .mb-5 {
-    margin-bottom: calc(var(--spacing) * 5);
-  }
   .mb-6 {
     margin-bottom: calc(var(--spacing) * 6);
   }
@@ -502,15 +496,6 @@
   .max-w-none {
     max-width: none;
   }
-  .max-w-screen-lg {
-    max-width: var(--breakpoint-lg);
-  }
-  .max-w-screen-md {
-    max-width: var(--breakpoint-md);
-  }
-  .max-w-screen-xl {
-    max-width: var(--breakpoint-xl);
-  }
   .max-w-xs {
     max-width: var(--container-xs);
   }
@@ -559,9 +544,6 @@
   .items-center {
     align-items: center;
   }
-  .items-end {
-    align-items: flex-end;
-  }
   .justify-between {
     justify-content: space-between;
   }
@@ -582,13 +564,6 @@
       --tw-space-x-reverse: 0;
       margin-inline-start: calc(calc(var(--spacing) * 2) * var(--tw-space-x-reverse));
       margin-inline-end: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-x-reverse)));
-    }
-  }
-  .space-x-2\.5 {
-    :where(& > :not(:last-child)) {
-      --tw-space-x-reverse: 0;
-      margin-inline-start: calc(calc(var(--spacing) * 2.5) * var(--tw-space-x-reverse));
-      margin-inline-end: calc(calc(var(--spacing) * 2.5) * calc(1 - var(--tw-space-x-reverse)));
     }
   }
   .space-x-4 {
@@ -753,9 +728,6 @@
   }
   .pt-6 {
     padding-top: calc(var(--spacing) * 6);
-  }
-  .pr-2 {
-    padding-right: calc(var(--spacing) * 2);
   }
   .pb-2 {
     padding-bottom: calc(var(--spacing) * 2);
@@ -1178,21 +1150,6 @@
       padding: calc(var(--spacing) * 0);
     }
   }
-  .md\:px-0 {
-    @media (width >= 48rem) {
-      padding-inline: calc(var(--spacing) * 0);
-    }
-  }
-  .md\:px-8 {
-    @media (width >= 48rem) {
-      padding-inline: calc(var(--spacing) * 8);
-    }
-  }
-  .md\:px-52 {
-    @media (width >= 48rem) {
-      padding-inline: calc(var(--spacing) * 52);
-    }
-  }
   .md\:py-0 {
     @media (width >= 48rem) {
       padding-block: calc(var(--spacing) * 0);
@@ -1457,6 +1414,28 @@
   --prose-weight: 300;
   --display-weight: 300;
   --prose-size: 18px;
+}
+.layout-narrow, .layout-medium, .layout-wide {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+.layout-narrow {
+  max-width: 48rem;
+}
+.layout-medium {
+  max-width: 64rem;
+}
+.layout-wide {
+  max-width: 80rem;
+}
+@media (min-width: 48rem) {
+  .layout-narrow, .layout-medium {
+    padding-inline: 0;
+  }
+  .layout-wide {
+    padding-inline: 2rem;
+  }
 }
 @media (max-width: 767px) {
   nav a, nav button {

@@ -10,7 +10,7 @@
     text-sm
     transition-colors
     duration-200">
-    <div class="container max-w-screen-md mx-auto pt-2 py-2">
+    <div class="layout-narrow pt-2 py-2">
         <nav class="flex
                     flex-wrap
                     w-full
@@ -25,7 +25,7 @@
                         justify-start">
                 <ul>
                     <li>
-                        Powered by <a target="_blank" href="https://gohugo.io" class="underline">Hugo</a> and Ristretto.
+                        Powered by Hugo and Ristretto.
                     </li>
                     <li>
                         {{- /* `{year}` in params.copyright becomes the current year at build
@@ -34,11 +34,14 @@
                     </li>
                 </ul>
             </div>
+            {{- /* Same md:py-4 as the block on the left, so the first link sits on
+                 the same line as "Powered by ...". No md:pt-0 here: Tailwind emits
+                 pt-* after py-*, so it would win and pull the link back up. */ -}}
             <ul class="
                        text-base
                        pt-4
                        md-flex
-                       md:pt-0">
+                       md:py-4">
                 {{ range site.Params.footerMenu }}
                 <li>
                     {{ if .icon }}

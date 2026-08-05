@@ -2,14 +2,7 @@
 {{- /* Front page: the latest post (two-paragraph excerpt by default, or in full
      when `home_latest_post_full` is set), then the newsletter form, then a grid
      of the next six posts. */ -}}
-<div class="container
-      max-w-screen-xl
-      mx-auto mb-auto
-      mt-20
-      px-4
-      md:mt-24
-      md:px-52
-      pb-16">
+<div class="layout-narrow mb-auto mt-20 md:mt-24 pb-16">
 
   {{ $posts := where site.RegularPages "Section" "posts" }}
   {{ $full := site.Params.home_latest_post_full }}

@@ -49,6 +49,53 @@
 }
 
 /**
+ * Layout containers.
+ *
+ * One definition per width. Templates previously each spelled out their own
+ * `container max-w-screen-* mx-auto px-4 md:px-N` combination, which is how the
+ * home page drifted to a 864px column while the footer sat at 768px and nothing
+ * lined up. Templates now pick a role and the width lives here.
+ *
+ *   narrow  reading column -- home, single posts, archive, search, 404, footer
+ *   medium  book reviews, whose cover sidebar needs more than a reading column
+ *   wide    card grids -- section and term listings, reading-books
+ *
+ * Width only: vertical rhythm (mt-20 md:mt-24 pb-16) stays with the templates,
+ * since the footer shares these widths but not that spacing.
+ */
+.layout-narrow,
+.layout-medium,
+.layout-wide {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 1rem;
+}
+
+.layout-narrow {
+    max-width: 48rem;
+}
+
+.layout-medium {
+    max-width: 64rem;
+}
+
+.layout-wide {
+    max-width: 80rem;
+}
+
+@media (min-width: 48rem) {
+
+    .layout-narrow,
+    .layout-medium {
+        padding-inline: 0;
+    }
+
+    .layout-wide {
+        padding-inline: 2rem;
+    }
+}
+
+/**
  * Mobile accessibility: Ensure touch targets are at least 48x48px
  * WCAG 2.5.5 (AAA) and 2.5.8 (AA) compliance
  */

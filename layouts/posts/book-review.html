@@ -8,7 +8,7 @@ that a book review looks the same in both places.
 
 {{ define "main" }}
 
-<div class="container max-w-screen-lg mx-auto mb-auto mt-20 px-4 md:mt-24 md:px-0 pb-16">
+<div class="layout-medium mb-auto mt-20 md:mt-24 pb-16">
     {{ partial "book-review-body.html" (dict "post" . "single" true "full" true) }}
 
     {{ if not .Params.disableSubscribeForm }}
