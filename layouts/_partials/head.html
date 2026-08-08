@@ -1,28 +1,40 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-{{- /* Generate SEO meta description */ -}}
+{{- /* Generate SEO meta description.
+
+     Every branch is truncated, not just the .Content one: with no `<!--more-->`
+     marker Hugo's auto-summary runs to the end of the paragraph that crosses
+     summaryLength, so on a short post .Summary is the whole post body -- which
+     was landing verbatim in this tag. */ -}}
 {{- $description := "" -}}
 {{- if .Description -}}
 {{- $description = .Description -}}
 {{- else if .Summary -}}
 {{- $description = .Summary -}}
 {{- else if .IsPage -}}
-{{- $description = .Content | plainify | truncate 155 -}}
+{{- $description = .Content -}}
 {{- else -}}
 {{- $description = site.Params.description | default site.Title -}}
+{{- end -}}
+{{- $description = $description | plainify | htmlUnescape | replaceRE `\s+` " " | chomp | truncate 155 -}}
+
+{{- /* `author` may be configured as a map (name/email), which renders as
+     `map[...]` if printed directly. */ -}}
+{{- $author := .Params.author | default site.Params.author | default site.Title -}}
+{{- if reflect.IsMap $author -}}
+{{- $author = $author.name | default site.Title -}}
 {{- end -}}
 
 <meta name="description" content="{{ $description }}">
 {{- if .IsPage -}}
-<meta name="author" content="{{ .Params.author | default site.Params.author | default site.Title }}">
+<meta name="author" content="{{ $author }}">
 {{- end -}}
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="{{ .Permalink }}">
 
 {{ hugo.Generator }}
-{{ template "_internal/opengraph.html" . }}
-{{ template "_internal/twitter_cards.html" . }}
+{{ partial "head/social.html" . }}
 
 <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
 {{ partialCached "head/fonts.html" . }}

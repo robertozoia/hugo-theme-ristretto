@@ -1,0 +1,107 @@
+{{- /*
+Social sharing metadata: Open Graph + Twitter/X cards.
+
+This replaces Hugo's embedded `opengraph.html` and `twitter_cards.html`. Do not
+put them back -- they cannot find this theme's cover images. Their image lookup
+(`_funcs/get-page-images`) only considers an `images:` front matter list, or a
+page-bundle resource whose *filename* matches `*feature*`/`*cover*`/`*thumbnail*`.
+This theme's convention is `cover: <filename>`, so the embedded templates emitted
+no `og:image` at all and fell back to `twitter:card=summary`, which is why posts
+previewed without an image on LinkedIn and WhatsApp.
+
+The resolved image is always re-encoded to a 1200x630 JPEG. The format is
+load-bearing, not cosmetic: LinkedIn will not render a WebP Open Graph image, and
+WhatsApp is unreliable with one. `og:image:width`/`height` are declared for the
+same reason -- without them both platforms tend to fall back to the small card.
+*/ -}}
+
+{{- $img := "" -}}
+
+{{- /* 1. This theme's convention: a bundled resource named by `cover:`. */ -}}
+{{- with .Params.cover -}}
+	{{- $img = $.Resources.GetMatch . -}}
+{{- end -}}
+
+{{- /* 2. Hugo's standard `images:` param, so pages written to the generic
+       convention keep working. Bundle resource first, then site assets. */ -}}
+{{- if not $img -}}
+	{{- with .Params.images -}}
+		{{- with index . 0 -}}
+			{{- $img = or ($.Resources.GetMatch .) (resources.Get .) -}}
+		{{- end -}}
+	{{- end -}}
+{{- end -}}
+
+{{- /* 3. Site-wide fallback, so a page with no image of its own still previews
+       as a card rather than bare text. Path is relative to `assets/`. */ -}}
+{{- if not $img -}}
+	{{- with site.Params.og_image -}}
+		{{- $img = resources.Get . -}}
+	{{- end -}}
+{{- end -}}
+
+{{- /* q78 rather than the default 75-or-higher: it keeps the heaviest photo
+       covers under ~270KB, and WhatsApp quietly drops the thumbnail on images
+       much past 300KB. The difference is invisible at preview-card size. */ -}}
+{{- with $img -}}
+	{{- $img = .Fill "1200x630 jpg q78" -}}
+{{- end -}}
+
+{{- $title := .Title | plainify | default site.Title -}}
+
+{{- /* Collapse whitespace before truncating: a summary spans paragraphs, and the
+       newlines survive into the attribute value otherwise. */ -}}
+{{- $description := or .Description .Summary site.Params.description | plainify | htmlUnescape -}}
+{{- $description = $description | replaceRE `\s+` " " | chomp | truncate 200 -}}
+
+{{- /* Open Graph wants `en_US`, not the `en-us` Hugo's locale carries. */ -}}
+{{- $locale := site.Language.Locale | default site.Language.Lang | default "en" -}}
+{{- $parts := split (replace $locale "-" "_") "_" -}}
+{{- if eq (len $parts) 2 -}}
+	{{- $locale = printf "%s_%s" (index $parts 0) (upper (index $parts 1)) -}}
+{{- end -}}
+
+<meta property="og:site_name" content="{{ site.Title }}">
+<meta property="og:title" content="{{ $title }}">
+<meta property="og:description" content="{{ $description }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:locale" content="{{ $locale }}">
+{{- if .IsPage }}
+<meta property="og:type" content="article">
+	{{- with .Section }}
+<meta property="article:section" content="{{ . }}">
+	{{- end }}
+	{{- if not .PublishDate.IsZero }}
+<meta property="article:published_time" content="{{ .PublishDate.Format "2006-01-02T15:04:05-07:00" }}">
+	{{- end }}
+	{{- if not .Lastmod.IsZero }}
+<meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05-07:00" }}">
+	{{- end }}
+	{{- range .GetTerms "tags" | first 6 }}
+<meta property="article:tag" content="{{ .Page.Title | plainify }}">
+	{{- end }}
+{{- else }}
+<meta property="og:type" content="website">
+{{- end }}
+{{- with $img }}
+<meta property="og:image" content="{{ .Permalink }}">
+<meta property="og:image:type" content="{{ .MediaType.Type }}">
+<meta property="og:image:width" content="{{ .Width }}">
+<meta property="og:image:height" content="{{ .Height }}">
+<meta property="og:image:alt" content="{{ $.Params.cover_alt | default $title }}">
+{{- end }}
+
+<meta name="twitter:card" content="{{ if $img }}summary_large_image{{ else }}summary{{ end }}">
+<meta name="twitter:title" content="{{ $title }}">
+<meta name="twitter:description" content="{{ $description }}">
+{{- with $img }}
+<meta name="twitter:image" content="{{ .Permalink }}">
+<meta name="twitter:image:alt" content="{{ $.Params.cover_alt | default $title }}">
+{{- end }}
+{{- with site.Params.social }}
+	{{- if reflect.IsMap . }}
+		{{- with .twitter }}
+<meta name="twitter:site" content="{{ if hasPrefix . "@" }}{{ . }}{{ else }}@{{ . }}{{ end }}">
+		{{- end }}
+	{{- end }}
+{{- end }}
