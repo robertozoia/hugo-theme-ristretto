@@ -68,7 +68,6 @@ copyright = "&copy; {year} Your Name. All rights reserved."
 reply_to_email = "you@example.com"
 mailchimp_user_id = "your_mailchimp_user_id"
 mailchimp_audience_id = "your_mailchimp_audience_id"
-goatcounter_code = "your_goatcounter_code"
 
 # Homepage
 home_latest_post_full = false
@@ -384,12 +383,8 @@ Dark mode toggle appears in the header. User preference persists via localStorag
 
 ### Analytics
 
-GoatCounter analytics support. Configure in `hugo.toml`:
-
-```toml
-[params]
-goatcounter_code = "your_code"
-```
+The theme ships no analytics. Add your provider's script from your site with
+the `custom/body_end.html` hook (see [Site-specific markup](#site-specific-markup-hooks)).
 
 ## Customization
 

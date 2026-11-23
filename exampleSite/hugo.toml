@@ -34,9 +34,6 @@ path = "github.com/robertozoia/hugo-theme-ristretto"
   mailchimp_user_id = 'your_mailchimp_user_id'
   mailchimp_audience_id = 'your_mailchimp_audience_id'
 
-  # GoatCounter analytics (optional)
-  # goatcounter_code = 'your_goatcounter_code'
-
   # Author information (used in RSS feed)
   [params.author]
     name = 'Your Name'
