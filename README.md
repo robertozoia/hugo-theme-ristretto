@@ -393,6 +393,24 @@ goatcounter_code = "your_code"
 
 ## Customization
 
+### Site-specific markup (hooks)
+
+The theme calls two partials that are empty by default. Create a file with the
+same path in your site to add your own markup (analytics, verification tags,
+extra scripts) without overriding any theme template:
+
+| Site file | Rendered |
+| --- | --- |
+| `layouts/_partials/custom/head.html` | at the end of `<head>` |
+| `layouts/_partials/custom/body_end.html` | just before `</body>` |
+
+```html
+<!-- layouts/_partials/custom/body_end.html -->
+{{ if hugo.IsProduction }}
+<script src="https://example.com/stats.js"></script>
+{{ end }}
+```
+
 ### Custom Layouts
 
 Create custom layouts in your site's `layouts` directory:

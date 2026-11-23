@@ -5,6 +5,7 @@
   {{ partial "head.html" . }}
   {{ block "per_page_scripts" . }}
   {{ end }}
+  {{ partial "custom/head.html" . }}
   <script>
     // Dark mode initialization - must run before body renders to avoid flash.
     // An explicit choice from the toggle is stored and always wins; without one
@@ -38,6 +39,7 @@
     </footer>
     {{ partial "footer_scripts.html" . }}
   </div>
+  {{ partial "custom/body_end.html" . }}
 </body>
 
 </html>
